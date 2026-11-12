@@ -1,126 +1,93 @@
-let loginAttempt = 0;
-
-function cancelLoginAttempt()
-{
-    loginAttempt++;
-}
-
 function loadLoginPage()
 {
-    enableFormFields();
-    // URLSearchParams reads the role selected on the home page.
-    let parameters = new URLSearchParams(window.location.search);
-    let role = parameters.get("role");
-    for (let i = 0; i < demoRoles.length; i++)
+    // The forms remain disabled if JavaScript cannot run.
+    let groups = document.querySelectorAll("fieldset");
+    for (let i = 0; i < groups.length; i++)
     {
-        if (role === demoRoles[i])
+        groups[i].disabled = false;
+    }
+    let role = window.location.search.replace("?role=", "");
+    for (let i = 0; i < roles.length; i++)
+    {
+        if (role === roles[i])
         {
-            document.getElementById("Role").value = role;
+            document.getElementById("LoginRole").value = role;
         }
     }
-    prepareFormFeedback();
-    initializeDemoStatus();
-    let form = document.querySelector("form");
-    form.addEventListener("input", cancelLoginAttempt);
-    form.addEventListener("change", cancelLoginAttempt);
+    if (window.location.hash === "#register")
+    {
+        showRegistration();
+    }
 }
 
-function fillDemoAccount()
+function showRegistration()
 {
-    cancelLoginAttempt();
-    clearAllErrors();
-    let role = document.getElementById("Role").value;
-    for (let i = 0; i < demoAccounts.length; i++)
+    document.getElementById("login").hidden = true;
+    document.getElementById("register").hidden = false;
+    document.getElementById("StudentName").focus();
+}
+
+function showLogin()
+{
+    document.getElementById("register").hidden = true;
+    document.getElementById("login").hidden = false;
+    resetLoginForm();
+    if (registeredStudents.length > 0)
     {
-        if (role === demoAccounts[i].role)
-        {
-            document.getElementById("Email").value = demoAccounts[i].email;
-            document.getElementById("Password").value = demoAccounts[i].password;
-            return;
-        }
+        let student = registeredStudents[registeredStudents.length - 1];
+        document.getElementById("LoginRole").value = "student";
+        document.getElementById("LoginEmail").value = student.email;
     }
-    showError("RoleError", "Select a role before filling its demo account.");
-    focusFirstError();
+    document.getElementById("LoginPassword").value = "";
+    document.getElementById("ShowLoginPassword").checked = false;
+    document.getElementById("LoginRole").focus();
 }
 
 function validateLoginForm()
 {
-    loginAttempt++;
-    let attempt = loginAttempt;
-    clearFormResult();
-    let validRole = validateSelect("Role", "RoleError", demoRoles, "a role");
-    let validEmail = validateEmail("Email", "EmailError");
-    let validPassword = validateRequired("Password", "PasswordError", "the demo password");
+    let validRole = validateSelect("LoginRole", roles, "a role");
+    let validEmail = validateEmail("LoginEmail");
+    let validPassword = validateRequired("LoginPassword", "your password");
     let isValid = validRole && validEmail && validPassword;
     if (isValid)
     {
-        let role = document.getElementById("Role").value;
-        let email = document.getElementById("Email").value.trim().toLowerCase();
-        let password = document.getElementById("Password").value;
+        let role = document.getElementById("LoginRole").value;
+        let email = document.getElementById("LoginEmail").value.trim().toLowerCase();
+        let password = document.getElementById("LoginPassword").value;
         for (let i = 0; i < demoAccounts.length; i++)
         {
-            if (role === demoAccounts[i].role && email === demoAccounts[i].email && password === demoAccounts[i].password)
+            if (role === demoAccounts[i].role && email === demoAccounts[i].email &&
+                password === demoAccounts[i].password)
             {
-                window.location.href = demoAccounts[i].dashboard;
+                window.location.href = demoAccounts[i].page;
                 return false;
             }
         }
-        let student = getRegisteredDemoStudent(email);
-        if (student)
+        for (let i = 0; i < registeredStudents.length; i++)
         {
-            if (role !== "student")
+            let student = registeredStudents[i];
+            if (email === student.email && password === student.password)
             {
-                showError("RoleError", "Registered demo accounts use the Student role. Select Student and try again.");
-                showResult(false);
-                focusFirstError();
-                return false;
-            }
-            if (!student.passwordHash)
-            {
-                showResult(false, "This profile was created with the older draft and has no demo password. Reset demo profiles on the home page, then register again to create a temporary login.");
-                return false;
-            }
-            if (window.location.protocol === "file:")
-            {
-                showResult(false, "Registered demo logins need a static preview such as VS Code Live Server. Open the project there and register again in the same tab.");
-                return false;
-            }
-            document.getElementById("ResultText").textContent = "Checking your temporary student account…";
-            makeDemoPasswordHash(password).then(function (hash)
-            {
-                if (attempt !== loginAttempt)
-                {
-                    return;
-                }
-                if (hash === student.passwordHash)
+                if (role === "student")
                 {
                     window.location.href = "Student/StudentDashboard.html";
+                    return false;
                 }
-                else
-                {
-                    showError("PasswordError", "The password does not match this temporary student account.");
-                    showResult(false);
-                    focusFirstError();
-                }
-            }).catch(function ()
-            {
-                if (attempt === loginAttempt)
-                {
-                    showResult(false, "The browser could not run the demo password check. Use a current browser with a static preview, or use a sample account.");
-                }
-            });
-            return false;
+                showError("LoginRole", "Select Student for a registered student account.");
+                showResult("LoginResult", false, "Please select the correct role.");
+                focusFirstError("LoginForm");
+                return false;
+            }
         }
-        showError("PasswordError", "These details do not match an account in this demo session. For a registered account, choose Student and use the same tab and site address. You can also use a sample account below.");
+        showError("LoginPassword", "The email, password and role do not match an available demo account.");
     }
-    showResult(false);
-    focusFirstError();
-    return false; // This demonstration never submits credentials to a server.
+    showResult("LoginResult", false, "Please check the fields above.");
+    focusFirstError("LoginForm");
+    return false;
 }
 
 function resetLoginForm()
 {
-    cancelLoginAttempt();
-    clearAllErrors();
-    document.getElementById("Password").type = "password";
+    clearFormErrors("LoginForm", "LoginResult");
+    document.getElementById("LoginPassword").type = "password";
 }

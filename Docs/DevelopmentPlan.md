@@ -1,92 +1,57 @@
-# StudyBuddy development plan
+# Development plan
 
-This is the approved frontend plan for AIUB Web Technologies, Fall 2026–27, Group 9. Milestone 1 is the shared foundation. Later features remain planned until implemented and tested.
+StudyBuddy uses HTML, CSS, and vanilla JavaScript. The faculty's HMS examples guide the role folders, shared CSS, shared validation, and separate page scripts. Their exact page counts are sample details, not extra requirements. The Figma prototype was inaccessible, so this draft uses a simple layout based on the sample.
 
-## Boundaries and references
+## Pages
 
-Use only HTML, CSS, and vanilla JavaScript. There is no backend, database, real authentication, or permanent data service. The faculty's extended HMS example is the main structural reference: separate role folders, one shared stylesheet, shared validation helpers, and one script per page. The smaller HospitalProject example also demonstrates shared registration validation.
+The complete plan has 17 page destinations. In this draft the registration form shares `Login.html` with login; the registration URL is a small compatibility page. This keeps a temporary account in one page's memory without browser storage.
 
-The examples are educational evidence, not additional project requirements. Their five-pages-per-role arrangement does not require artificial StudyBuddy forms. StudyBuddy code is original. The Figma design was inaccessible during inspection, so visual matching remains unverified.
-
-## Page roadmap: 17 pages
-
-| Page | Purpose | Status |
-|---|---|---|
-| `index.html` | Introduce the project and offer all four roles. | Milestone 1 |
-| `Login.html` | Validate the selected role and public demo credentials, or a registered temporary Student login, then open its dashboard. | Milestone 1 |
-| `Student/StudentRegistration.html` | Validate profile fields and create a temporary Student demo login when browser hashing and storage succeed. | Milestone 1 |
-| `Student/StudentDashboard.html` | Role navigation and foundation shell; academic summaries come later. | Shell in Milestone 1 |
-| `Student/AcademicProgress.html` | Display fictional completed courses, grades, credits, and remaining credits. | Planned |
-| `Student/CGPACalculator.html` | Calculate a credit-weighted result from validated rows. | Planned |
-| `Student/SemesterPlanner.html` | Check selected sections, prerequisites, credit limits, and timetable conflicts. | Planned |
-| `Student/CourseRecommendations.html` | Explain course eligibility and available offerings. | Planned |
-| `Admin/AdminDashboard.html` | Role navigation and foundation shell; management counts come later. | Shell in Milestone 1 |
-| `Admin/StudentManagement.html` | Add/edit temporary fictional student records. | Planned |
-| `Admin/CourseManagement.html` | Add/edit catalog courses, credits, prerequisites, and active status. | Planned |
-| `Advisor/AdvisorDashboard.html` | Role navigation and foundation shell; advisees and pending plans come later. | Shell in Milestone 1 |
-| `Advisor/AcademicAdvising.html` | Validate and display an advising note for a fictional student. | Planned |
-| `Advisor/CoursePlanReview.html` | Recheck a submitted plan and record a demo review decision. | Planned |
-| `Coordinator/CoordinatorDashboard.html` | Role navigation and foundation shell; offering/schedule summaries come later. | Shell in Milestone 1 |
-| `Coordinator/CourseOffering.html` | Offer catalog courses in a term and section. | Planned |
-| `Coordinator/SemesterSchedule.html` | Assign faculty, rooms, days, and times without conflicts. | Planned |
-
-Every role page will provide Dashboard, Home, and Switch Role navigation. Planned features must be labeled clearly and must not link to nonexistent pages.
-
-## Form validation matrix: 10 forms
-
-| Form | Rules |
+| Page destination | Work |
 |---|---|
-| Login | A known role, valid email, nonempty password, and matching public demo credentials for that role, or a matching saved password verifier for a temporary Student login in the same tab/site. Registered accounts must use Student. Older profiles without a verifier receive reset/re-registration instructions. |
-| Student registration | Trimmed name 3–60 characters with normal name punctuation; project ID format `YY-NNNNN-S`, where `S` is 1–3; valid email; optional Bangladeshi mobile number beginning 013–019 with 11 digits; known program; semester 1–12; password of at least 8 characters containing uppercase, lowercase, and a digit; exact confirmation; no duplicate profile ID/email or reserved sample email; static preview origin; successful native password-verifier preparation and storage write before reporting success. |
-| CGPA calculator | At least one complete, nonduplicate course row; finite numeric credits and grade points; credits within the documented demo range; grade points 0–4; paired previous credits/CGPA if provided; no zero denominator. |
-| Semester planning | Available semester and at least one offered section; no duplicate/passed courses, inactive offerings, unmet prerequisites, excessive credits, or timetable overlaps. |
-| Student management | Valid name, ID, email, program, admission semester, and status; duplicate checks exclude the record being edited; referenced IDs remain fixed. |
-| Course management | Unique code, title, department, valid credits, and active status; prerequisites exist and cause no self-reference or cycle; referenced course codes remain fixed. |
-| Academic advising | Existing advisee and topic; trimmed note of 20–500 characters; follow-up date required when selected and no earlier than the advising date. |
-| Course-plan review | Existing submitted plan and decision; repeated academic checks; no approval with blocking issues; revision explanation of 20–500 characters. |
-| Course offering | Active course, valid term/year, section, capacity, and status; no duplicate course–term–section; capacity is an integer within the documented demo range. |
-| Semester schedule | Existing offering; at least one day; valid start/end, room, and faculty; end after start; no room/faculty overlap in the term/day; enough room capacity; editing excludes its own record. |
+| index.html | Home and four role links; current draft. |
+| Login.html | Login and registration sections; current draft. |
+| Student/StudentRegistration.html | Opens the shared registration section; current draft. |
+| Student/StudentDashboard.html | Dashboard layout; current draft. |
+| Student/AcademicProgress.html | Completed courses, grades, and credits; later. |
+| Student/CGPACalculator.html | Credit-weighted calculation; later. |
+| Student/SemesterPlanner.html | Course selection and eligibility checks; later. |
+| Student/CourseRecommendations.html | Eligible courses with reasons; later. |
+| Admin/AdminDashboard.html | Dashboard layout; current draft. |
+| Admin/StudentManagement.html | Add/edit sample student records; later. |
+| Admin/CourseManagement.html | Course catalog and prerequisites; later. |
+| Advisor/AdvisorDashboard.html | Dashboard layout; current draft. |
+| Advisor/AcademicAdvising.html | Advising form; later. |
+| Advisor/CoursePlanReview.html | Review a course plan; later. |
+| Coordinator/CoordinatorDashboard.html | Dashboard layout; current draft. |
+| Coordinator/CourseOffering.html | Semester offerings; later. |
+| Coordinator/SemesterSchedule.html | Class times and rooms; later. |
 
-All forms show field-level errors, preserve values after an invalid submission, clear stale feedback on correction, and reset dependent controls. Shared validators return `true` or `false`. Each form runs all its validators before combining their results so all relevant errors appear together.
+Future filenames above describe work to build; they are not working page links.
 
-## Student module
+## Forms and rules
 
-Build registration and the dashboard shell first. Later, add academic progress, the calculator, recommendations, and the semester planner. Use ordinary arrays, loops, numeric checks, and DOM updates. The sample's dynamic doctor dropdown is a reference for course/section choices.
+| Form | Validation |
+|---|---|
+| Login | Known role, valid email, nonempty password, matching sample or temporary Student account. |
+| Student registration | Name, project-format ID, email, optional BD phone, known program/semester, strong demo password and matching confirmation; no duplicate ID/email. |
+| CGPA calculator | Complete unique course rows, valid credits and grade points, nonzero credit total; later. |
+| Semester planning | Offered sections, completed prerequisites, no duplicates, credit limit and timetable checks; later. |
+| Student management | Required details, valid fields, duplicate checks excluding the edited record; later. |
+| Course management | Unique code, title, credits, valid prerequisites without cycles; later. |
+| Academic advising | Existing student, topic, meaningful note, valid follow-up if selected; later. |
+| Course-plan review | Existing plan, decision, repeat eligibility checks, explanation for revision; later. |
+| Course offering | Active course, term, section, integer capacity, no duplicate offering; later. |
+| Semester schedule | Offering, day, room, faculty, start before end, no room/faculty overlap; later. |
 
-CGPA will be total credit-weighted grade points divided by total attempted credits, with rounding only for display. Retake replacement and university-specific rules are outside the initial calculator unless the applicable policy is provided. Recommendations will explain prerequisites and offering availability; they will not be described as an AI service.
+Academic ID formats, credit limits, and curriculum data are project assumptions until an applicable AIUB policy is supplied. CGPA will use total credit-weighted grade points divided by total attempted credits; institution-specific retake rules need confirmation.
 
-## Administrator module
+## Order
 
-Build student and course management with temporary records and visible tables. Use the sample's AddStaff and ManageDepartment pages as educational references for page-specific and cross-field validation. Deactivate referenced records where deleting them would break linked demo records.
+1. Finish this simple foundation: shared design, navigation, login, registration, and dashboard layouts.
+2. Administrator: student records and course catalog.
+3. Coordinator: offerings and schedules.
+4. Student: progress and CGPA, then recommendations and planning.
+5. Advisor: notes, plan review, and feedback.
+6. Combine the modules, review validation, and rehearse explanations.
 
-## Faculty Advisor module
-
-Build advising notes and plan review after the student planner works. Reuse academic checks rather than introducing inconsistent advisor rules. Requesting revision requires a meaningful explanation. Editing a submitted student plan returns it to pending review.
-
-## Academic Coordinator module
-
-Build offerings before the student recommendation/planning pages. Then add schedules using time-to-minutes calculations like the sample's SetSchedule page. Two classes may meet back-to-back; intersecting times for the same room or faculty member are rejected.
-
-## Shared data and assumptions
-
-`JS/Data.js` contains fictional records and four public sample accounts. `JS/Demo.js` keeps registered Student profiles and a password comparison value in tab-session storage. Raw passwords and confirmation values are never stored. The native Web Crypto SHA-256 API prepares the comparison value; this is an explicitly explained extension beyond the faculty sample and does not provide real authentication or access protection.
-
-New registrations succeed only after the browser prepares the verifier and saves the profile. Failed storage creates no page-only login. Registered Student logins require a static preview, the same browser tab, and the same site address. Sample logins continue to work when `index.html` is opened directly. Legacy profiles without a verifier remain readable so login can explain Reset Demo Profiles and re-registration. All four public sample email addresses are reserved.
-
-Password preparation is asynchronous. Named cancellation functions increment an attempt number after edits, reset, or another submission; an older callback cannot save a stale registration or redirect after the form changes. This remains part of the bounded Milestone 1 correction, not an expansion into backend authentication.
-
-The project ID pattern is a demonstration rule, not verification of an official AIUB rule. Before later academic modules, document the sample curriculum, credit ranges, grading assumptions, and semester credit limit centrally. An initial 18-credit limit is a project assumption until confirmed. Browser-local data is not shared across devices or teammates and can be reset.
-
-## Implementation order
-
-| Milestone | Deliverable | Dependency |
-|---|---|---|
-| 1 | Shared design, navigation, four dashboard shells, demo login, registration, and learning documents. | Approved plan. |
-| 2 | Administrator student/course management. | Shared validation and data layout. |
-| 3 | Coordinator offerings and schedules. | Course catalog. |
-| 4 | Student progress and weighted CGPA calculator. | Student/catalog records. |
-| 5 | Recommendations and semester planning. | Completed courses, offerings, and schedules. |
-| 6 | Advising, plan review, and student-visible feedback. | Submitted plans. |
-| 7 | Integrated validation, responsive/accessibility review, explanations, and demo rehearsal. | Working role modules. |
-
-Before each module, explain which faculty-sample concepts will be used and explain any new technique. Keep changes reviewable and record actual checks. Never mark a feature complete based only on its visual appearance.
+Before each module, explain the relevant HMS concepts. Keep changes small and record actual results. Later modules must decide their temporary-data handling explicitly; this draft promises no cross-page saving or real authentication.

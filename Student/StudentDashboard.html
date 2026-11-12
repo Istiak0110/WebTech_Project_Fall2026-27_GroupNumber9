@@ -3,86 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student dashboard — StudyBuddy</title>
-    <link rel="icon" href="../Images/StudyBuddyLogo.svg" type="image/svg+xml">
+    <title>StudyBuddy - Student Dashboard</title>
     <link rel="stylesheet" href="../Design/Style.css">
 </head>
-<body onload="loadStudentDashboard()">
-    <a class="skip-link" href="#main">Skip to dashboard</a>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <a class="brand" href="../index.html" aria-label="StudyBuddy home">
-                <img src="../Images/StudyBuddyLogo.svg" alt="" width="36" height="36">
-                <span><strong>StudyBuddy</strong><small>A better semester, together.</small></span>
-            </a>
-            <p class="sidebar-label">Student workspace</p>
-            <nav class="sidebar-nav" aria-label="Student navigation">
-                <a class="active" href="StudentDashboard.html" aria-current="page">Dashboard</a>
-                    <a href="#academic-progress">Academic progress</a>
-                    <a href="#cgpa-calculator">CGPA calculator</a>
-                    <a href="#semester-planner">Semester planner</a>
-                    <a href="#course-recommendations">Course recommendations</a>
-            </nav>
-            <div class="sidebar-bottom">
-                <a href="../index.html">Back to home</a>
-                <p>AIUB · Group 9<br>Web Technologies<br>Fall 2026–27</p>
-            </div>
-        </aside>
-        <div class="dashboard-main">
-            <header class="dashboard-topbar">
-                <span class="breadcrumb">Workspace / <strong>Student</strong></span>
-                <a class="button secondary small" href="../Login.html">Switch role <span aria-hidden="true">↗</span></a>
-            </header>
-            <main id="main" class="dashboard-content">
-                <div class="dashboard-title">
-                    <div><p class="eyebrow">Student dashboard</p><h1>Your academic journey, one step at a time.</h1><p>A home for your progress, course choices, and next semester.</p></div>
-                    <span class="pill ready">Foundation preview</span>
-                </div>
-                <noscript><p class="noscript-note">JavaScript is needed for temporary demo-profile storage and reset. Dashboard navigation still works.</p></noscript>
-                <section class="welcome-panel" aria-labelledby="WelcomeTitle">
-                    <div><h2 id="WelcomeTitle">Build a little clarity into your semester.</h2><p>Try the working registration form today. Progress tracking, calculations, and semester planning will arrive in the next milestones.</p></div>
-                    <a class="button secondary small" href="StudentRegistration.html">Try student registration <span aria-hidden="true">→</span></a>
-                </section>
-                <section aria-labelledby="FeaturesTitle">
-                    <h2 id="FeaturesTitle" class="feature-heading">Your workspace roadmap</h2>
-                    <div class="feature-grid">
-                        <article class="feature-card" id="academic-progress">
-                            <div class="card-top"><span class="card-number">01 / STUDENT</span><span class="pill planned">Planned</span></div>
-                            <h3>Academic progress</h3>
-                            <p>See completed courses, earned credits, grades, and remaining degree requirements.</p>
-                            <p class="milestone">Scheduled for milestone 4. This feature is not implemented yet.</p>
-                        </article>
-                        <article class="feature-card" id="cgpa-calculator">
-                            <div class="card-top"><span class="card-number">02 / STUDENT</span><span class="pill planned">Planned</span></div>
-                            <h3>CGPA calculator</h3>
-                            <p>Calculate a credit-weighted result and understand how each course contributes.</p>
-                            <p class="milestone">Scheduled for milestone 4. This feature is not implemented yet.</p>
-                        </article>
-                        <article class="feature-card" id="semester-planner">
-                            <div class="card-top"><span class="card-number">03 / STUDENT</span><span class="pill planned">Planned</span></div>
-                            <h3>Semester planner</h3>
-                            <p>Choose course sections and check prerequisites, credit limits, and timetable conflicts.</p>
-                            <p class="milestone">Scheduled for milestone 5. This feature is not implemented yet.</p>
-                        </article>
-                        <article class="feature-card" id="course-recommendations">
-                            <div class="card-top"><span class="card-number">04 / STUDENT</span><span class="pill planned">Planned</span></div>
-                            <h3>Course recommendations</h3>
-                            <p>Explore eligible courses with clear reasons based on sample academic records.</p>
-                            <p class="milestone">Scheduled for milestone 5. This feature is not implemented yet.</p>
-                        </article>
-                    </div>
-                </section>
-                <div class="dashboard-note">
-                    <p>This dashboard is a frontend demonstration. Academic records, statistics, and actions will be added in the milestones shown above.</p>
-                    <button class="link-button" type="button" onclick="resetDemoData()">Reset demo profiles</button>
-                    <p id="DemoStatus" role="status" aria-live="polite">Profiles are temporary and belong to this browser demonstration.</p>
-                </div>
-            </main>
+<body>
+    <header class="header">
+        <h1>StudyBuddy</h1>
+        <p>Student Academic Planning and Course Recommendation System</p>
+    </header>
+
+    <nav class="topnav" aria-label="Student Dashboard navigation">
+        <a href="../index.html">Home</a>
+        <a href="StudentDashboard.html" class="active" aria-current="page">Dashboard</a>
+        <a href="../Login.html">Login / Switch Role</a>
+    </nav>
+
+    <main class="page">
+        <h2>Student Dashboard</h2>
+        <p>This page will show a student's academic information and course planning tools.</p>
+        <p class="small-note">These tools will be added in the next parts of the project.</p>
+
+        <p><a href="../Login.html#register">Open student registration</a></p>
+
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Tool</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#academic-progress">Academic Progress</a></td>
+                        <td>Next part</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#cgpa-calculator">CGPA Calculator</a></td>
+                        <td>Next part</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#semester-planner">Semester Planner</a></td>
+                        <td>Next part</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#course-recommendations">Course Recommendations</a></td>
+                        <td>Next part</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
-    <script src="../JS/Common.js"></script>
-    <script src="../JS/Data.js"></script>
-    <script src="../JS/Demo.js"></script>
-    <script src="JS/StudentDashboard.js"></script>
+
+        <section class="tool-section" id="academic-progress">
+            <h3>Academic Progress</h3>
+            <p>View completed courses, grades and earned credits.</p>
+        </section>
+
+        <section class="tool-section" id="cgpa-calculator">
+            <h3>CGPA Calculator</h3>
+            <p>Calculate CGPA using course credits and grade points.</p>
+        </section>
+
+        <section class="tool-section" id="semester-planner">
+            <h3>Semester Planner</h3>
+            <p>Select courses for a semester and check prerequisites.</p>
+        </section>
+
+        <section class="tool-section" id="course-recommendations">
+            <h3>Course Recommendations</h3>
+            <p>Find courses that match the student's completed prerequisites.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Web Technologies | Fall 2026–27 | Group 9</p>
+        <p>Frontend demonstration with sample data.</p>
+    </footer>
 </body>
 </html>

@@ -1,209 +1,152 @@
-// Shared form helpers. Each validate function returns true or false.
-// Forms stay disabled in HTML until their JavaScript validation is ready.
-function enableFormFields()
+// Each validation function returns true or false, like the HMS sample.
+function showError(inputId, message)
 {
-    let fieldsets = document.querySelectorAll("fieldset");
-    for (let i = 0; i < fieldsets.length; i++)
+    document.getElementById(inputId + "Error").textContent = message;
+    document.getElementById(inputId).setAttribute("aria-invalid", "true");
+}
+
+function clearError(inputId)
+{
+    document.getElementById(inputId + "Error").textContent = "";
+    document.getElementById(inputId).removeAttribute("aria-invalid");
+}
+
+function showResult(resultId, valid, message)
+{
+    let result = document.getElementById(resultId);
+    result.textContent = message;
+    result.className = "message failed";
+    if (valid)
     {
-        fieldsets[i].disabled = false;
+        result.className = "message success";
     }
 }
 
-function showError(errorId, message)
+function clearResult(resultId)
 {
-    document.getElementById(errorId).textContent = message;
-    let input = document.getElementById(errorId.replace(/Error$/, ""));
-    if (input)
-    {
-        input.setAttribute("aria-invalid", "true");
-    }
+    document.getElementById(resultId).textContent = "";
+    document.getElementById(resultId).className = "message";
 }
 
-function clearError(errorId)
+function clearFormErrors(formId, resultId)
 {
-    document.getElementById(errorId).textContent = "";
-    let input = document.getElementById(errorId.replace(/Error$/, ""));
-    if (input)
-    {
-        input.removeAttribute("aria-invalid");
-    }
-}
-
-function showResult(isValid, message)
-{
-    let result = document.getElementById("ResultText");
-    result.className = "form-result failed";
-    result.textContent = message || "Please correct the marked fields and try again.";
-    if (isValid)
-    {
-        result.className = "form-result success";
-        result.textContent = message;
-    }
-}
-
-function clearFormResult()
-{
-    let result = document.getElementById("ResultText");
-    if (result)
-    {
-        result.textContent = "";
-        result.className = "form-result";
-    }
-    let continueLink = document.getElementById("ContinueLogin");
-    if (continueLink)
-    {
-        continueLink.hidden = true;
-    }
-}
-
-function clearAllErrors()
-{
-    let errors = document.querySelectorAll(".error");
+    let form = document.getElementById(formId);
+    let errors = form.querySelectorAll(".error");
+    let inputs = form.querySelectorAll("input, select");
     for (let i = 0; i < errors.length; i++)
     {
-        clearError(errors[i].id);
+        errors[i].textContent = "";
     }
-    clearFormResult();
+    for (let i = 0; i < inputs.length; i++)
+    {
+        inputs[i].removeAttribute("aria-invalid");
+    }
+    clearResult(resultId);
 }
 
-function focusFirstError()
+function focusFirstError(formId)
 {
-    let input = document.querySelector('[aria-invalid="true"]');
+    let input = document.getElementById(formId).querySelector('[aria-invalid="true"]');
     if (input)
     {
         input.focus();
     }
 }
 
-// Changing a field removes an old success message, but keeps useful field errors.
-function prepareFormFeedback()
+function validateRequired(inputId, label)
 {
-    let form = document.querySelector("form");
-    if (form)
+    if (document.getElementById(inputId).value.trim() === "")
     {
-        form.addEventListener("input", clearFormResult);
-        form.addEventListener("change", clearFormResult);
-    }
-}
-
-function validateRequired(inputId, errorId, label)
-{
-    let value = document.getElementById(inputId).value.trim();
-    if (value === "")
-    {
-        showError(errorId, "Please enter " + label + ".");
+        showError(inputId, "Please enter " + label + ".");
         return false;
     }
-    clearError(errorId);
+    clearError(inputId);
     return true;
 }
 
-function validateName(inputId, errorId)
+function validateName(inputId)
 {
     let value = document.getElementById(inputId).value.trim();
-    if (value.length < 3 || value.length > 60)
+    if (value.length < 3 || value.length > 60 ||
+        !/^[A-Za-z .'-]+$/.test(value) || !/[A-Za-z]/.test(value))
     {
-        showError(errorId, "Enter a name between 3 and 60 characters.");
+        showError(inputId, "Use 3 to 60 English letters, spaces, dots, apostrophes or hyphens.");
         return false;
     }
-    if (!/^[A-Za-z .'-]+$/.test(value) || !/[A-Za-z]/.test(value))
-    {
-        showError(errorId, "Use English letters, spaces, dots, apostrophes or hyphens.");
-        return false;
-    }
-    clearError(errorId);
+    clearError(inputId);
     return true;
 }
 
-function validateEmail(inputId, errorId)
+function validateEmail(inputId)
 {
-    let value = document.getElementById(inputId).value.trim();
-    let expression = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (value.length > 254 || !expression.test(value))
+    let email = document.getElementById(inputId).value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     {
-        showError(errorId, "Enter a valid email, such as name@example.com.");
+        showError(inputId, "Enter a valid email address, such as name@example.com.");
         return false;
     }
-    clearError(errorId);
+    clearError(inputId);
     return true;
 }
 
-function validatePattern(inputId, errorId, expression, message)
-{
-    let value = document.getElementById(inputId).value.trim();
-    if (!expression.test(value))
-    {
-        showError(errorId, message);
-        return false;
-    }
-    clearError(errorId);
-    return true;
-}
-
-function validateSelect(inputId, errorId, choices, label)
+function validateSelect(inputId, options, label)
 {
     let value = document.getElementById(inputId).value;
-    for (let i = 0; i < choices.length; i++)
+    for (let i = 0; i < options.length; i++)
     {
-        if (value === choices[i])
+        if (value === options[i])
         {
-            clearError(errorId);
+            clearError(inputId);
             return true;
         }
     }
-    showError(errorId, "Please select " + label + " from the list.");
+    showError(inputId, "Please select " + label + " from the list.");
     return false;
 }
 
-function validatePhone(inputId, errorId)
+function validatePhone(inputId)
 {
-    let value = document.getElementById(inputId).value.trim();
-    if (value !== "" && !/^01[3-9][0-9]{8}$/.test(value))
+    let phone = document.getElementById(inputId).value.trim();
+    if (phone !== "" && !/^01[3-9][0-9]{8}$/.test(phone))
     {
-        showError(errorId, "Use 11 digits starting with 013–019, or leave this optional field blank.");
+        showError(inputId, "Enter an 11-digit mobile number starting with 013 to 019.");
         return false;
     }
-    clearError(errorId);
+    clearError(inputId);
     return true;
 }
 
-function validatePassword(inputId, errorId)
+function validatePassword(inputId)
 {
-    // Passwords are not trimmed: a space is part of the entered password.
-    let value = document.getElementById(inputId).value;
-    if (value.length < 8)
+    let password = document.getElementById(inputId).value;
+    if (password.length < 8 || !/[A-Z]/.test(password) ||
+        !/[a-z]/.test(password) || !/[0-9]/.test(password))
     {
-        showError(errorId, "Use at least 8 characters.");
+        showError(inputId, "Use at least 8 characters with an uppercase letter, a lowercase letter and a number.");
         return false;
     }
-    if (!/[A-Z]/.test(value) || !/[a-z]/.test(value) || !/[0-9]/.test(value))
-    {
-        showError(errorId, "Include an uppercase letter, a lowercase letter and a number.");
-        return false;
-    }
-    clearError(errorId);
+    clearError(inputId);
     return true;
 }
 
-function validateConfirmPassword(passwordId, confirmId, errorId)
+function validateConfirmPassword(passwordId, confirmId)
 {
     let password = document.getElementById(passwordId).value;
     let confirm = document.getElementById(confirmId).value;
     if (confirm === "" || confirm !== password)
     {
-        showError(errorId, "Enter the same password again.");
+        showError(confirmId, "The passwords must match.");
         return false;
     }
-    clearError(errorId);
+    clearError(confirmId);
     return true;
 }
 
 function togglePassword(inputId, checkbox)
 {
-    let input = document.getElementById(inputId);
-    input.type = "password";
+    document.getElementById(inputId).type = "password";
     if (checkbox.checked)
     {
-        input.type = "text";
+        document.getElementById(inputId).type = "text";
     }
 }
