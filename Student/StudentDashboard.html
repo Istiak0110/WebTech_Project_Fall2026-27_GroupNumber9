@@ -6,75 +6,86 @@
     <link rel="icon" href="../Images/StudyBuddyLogo.png" type="image/png">
     <title>StudyBuddy - Student Dashboard</title>
     <link rel="stylesheet" href="../Design/Style.css">
+    <link rel="stylesheet" href="../Design/Dashboard.css">
 </head>
-<body class="student" onload="loadStudentDashboard()">
-    <header class="header">
-        <div class="brand">
-            <a href="../index.html" aria-label="StudyBuddy home">
-                <img class="project-logo" src="../Images/StudyBuddyLogo.png" alt="StudyBuddy logo: two students and an open book" width="76" height="72">
+<body class="student dashboard" onload="loadStudentDashboard()">
+    <a class="skip-link" href="#DashboardTitle">Skip to content</a>
+    <div class="app-layout">
+        <aside id="DashboardSidebar" class="sidebar">
+            <a class="sidebar-brand" href="../index.html">
+                <img src="../Images/StudyBuddyLogo.png" alt="" width="44" height="42">
+                <span><strong>StudyBuddy</strong><small>Academic Planning</small></span>
             </a>
-            <h1>StudyBuddy</h1>
-        </div>
-        <p>Student Academic Planning and Course Recommendation System</p>
-    </header>
-
-    <nav class="topnav" aria-label="Student Dashboard navigation">
-        <a href="../index.html">Home</a>
-        <a href="StudentDashboard.html" class="active" aria-current="page">Dashboard</a>
-        <a href="../Login.html">Login / Switch Role</a>
-    </nav>
-
-    <main class="page">
-        <h2>Student Dashboard</h2>
-        <p>Use the sample academic record, calculate a GPA, and prepare a semester plan.</p>
-        <p class="small-note">Changes and results on this page are temporary. They reset when you refresh or leave this page.</p>
-
-        <p><a href="../Login.html#register">Open student registration</a></p>
-
-        <div class="table-scroll">
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Tool</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="#academic-progress">Academic Progress</a></td>
-                        <td>Available</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#cgpa-calculator">CGPA Calculator</a></td>
-                        <td>Available</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#semester-planner">Semester Planner</a></td>
-                        <td>Available</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#course-recommendations">Course Recommendations</a></td>
-                        <td>Available</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <noscript><p class="message failed">Enable JavaScript to use the academic tools.</p></noscript>
-        <section class="tool-section" id="academic-progress">
+            <nav class="sidebar-nav" aria-label="Student navigation">
+                <p class="nav-label">Main</p>
+                <a href="#overview" data-section="overview">Dashboard</a>
+                <a href="#academic-progress" data-section="academic-progress">Academic Profile</a>
+                <p class="nav-label">Planning</p>
+                <a href="#prerequisite-checker" data-section="prerequisite-checker">Prerequisite Checker</a>
+                <a href="#course-recommendations" data-section="course-recommendations">Course Recommendations</a>
+                <a href="#semester-planner" data-section="semester-planner">Semester Planner</a>
+                <a href="#cgpa-calculator" data-section="cgpa-calculator">CGPA Calculator</a>
+                <p class="nav-label">Progress</p>
+                <a href="#graduation-tracker" data-section="graduation-tracker">Graduation Tracker</a>
+                <p class="nav-label">Support</p>
+                <a href="#academic-assistant" data-section="academic-assistant">Academic Assistant</a>
+            </nav>
+            <div class="sidebar-bottom"><a href="../index.html">Home</a><a href="../Login.html">Login / Switch Role</a></div>
+        </aside>
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <button id="SidebarToggle" class="sidebar-toggle" type="button" onclick="toggleDashboardSidebar()" aria-controls="DashboardSidebar" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+                <div><h1 id="DashboardTitle" tabindex="-1">Student Dashboard</h1><p id="DashboardSubtitle">Your academic progress and recommended next steps.</p></div>
+                <div class="header-actions">
+                    <a class="icon-button" href="#academic-alerts" aria-label="View academic alerts">🔔</a>
+                    <details class="profile-menu"><summary><span class="avatar">AR</span> Amina <span aria-hidden="true">⌄</span></summary><p>Fictional student profile</p><a href="#academic-progress">Academic Profile</a><a href="../Login.html">Switch Role</a></details>
+                </div>
+            </header>
+            <div class="dashboard-content">
+                <noscript><p class="message failed">Enable JavaScript to use the dashboard navigation and academic tools.</p></noscript>
+                <section id="overview" class="dashboard-section" data-dashboard-section data-title="Good morning, Amina" data-description="Here is your sample academic progress and recommended next steps.">
+                    <div class="stat-grid">
+                        <article class="stat-card"><p>Current CGPA</p><strong id="OverviewGPA">0.00</strong><small>Out of 4.00 · Sample scale</small></article>
+                        <article class="stat-card"><p>Credits Earned</p><strong id="OverviewCredits">0 / 0</strong><small id="OverviewPercent">0% completed</small></article>
+                        <article class="stat-card"><p>Completed Courses</p><strong id="OverviewCompleted">0</strong><small>Courses completed</small></article>
+                        <article class="stat-card"><p>Remaining Credits</p><strong id="OverviewRemaining">0</strong><small>In the demo curriculum</small></article>
+                    </div>
+                    <div class="content-grid">
+                        <div class="wide-column">
+                            <article class="panel">
+                                <div class="panel-header"><div><h2>Degree Progress</h2><p>Fictional BSc in Computer Science curriculum</p></div></div>
+                                <h3 id="OverviewDegreePercent">0% complete</h3><p id="OverviewDegreeCredits"></p>
+                                <progress id="OverviewProgress" class="progress-bar" value="0" max="100">0%</progress>
+                                <div id="OverviewCategories"></div>
+                            </article>
+                            <article class="panel">
+                                <div class="panel-header"><div><h2>Academic Alerts</h2><p>Useful next steps from the sample record.</p></div><a href="#academic-alerts">View All Alerts →</a></div>
+                                <ul id="OverviewAlerts"></ul>
+                            </article>
+                        </div>
+                        <div class="side-column">
+                            <article class="panel">
+                                <div class="panel-header"><div><h2>Course Recommendations</h2><p>Based on completed prerequisites.</p></div><a href="#course-recommendations">View All →</a></div>
+                                <div id="OverviewRecommendations"></div>
+                                <p class="small-note">These are predefined academic rules, not AI recommendations.</p>
+                            </article>
+                            <article class="panel"><div class="panel-header"><div><h2>Quick Actions</h2><p>Open your planning tools.</p></div></div><div class="quick-actions"><a class="action-link" href="#prerequisite-checker">Check Prerequisites →</a><a class="action-link" href="#course-recommendations">View Recommendations →</a><a class="action-link" href="#semester-planner">Plan Semester →</a><a class="action-link" href="#academic-assistant">Ask Academic Assistant →</a></div></article>
+                        </div>
+                    </div>
+                </section>
+        <section class="dashboard-section panel" data-dashboard-section data-title="Academic Profile" data-description="Your fictional transcript and completed courses." id="academic-progress">
             <h3>Academic Progress</h3>
             <p>Fictional sample student: <strong id="ProgressStudent"></strong>. This is not a record retrieved from login.</p>
             <div class="table-scroll">
                 <table>
                     <caption>Sample completed courses</caption>
-                    <thead><tr><th scope="col">Code</th><th scope="col">Course</th><th scope="col">Credits</th><th scope="col">Status</th></tr></thead>
+                    <thead><tr><th scope="col">Code</th><th scope="col">Course</th><th scope="col">Credits</th><th scope="col">Grade</th><th scope="col">Status</th></tr></thead>
                     <tbody id="ProgressRows"></tbody>
                 </table>
             </div>
             <p>Completed sample credits: <strong id="ProgressCredits">0</strong></p>
         </section>
-
-        <section class="tool-section" id="cgpa-calculator">
+        <section class="dashboard-section panel" data-dashboard-section data-title="CGPA Calculator" data-description="Calculate a credit-weighted GPA using the sample grading scale." id="cgpa-calculator">
             <h3>CGPA Calculator</h3>
             <p>Enter courses to calculate their credit-weighted GPA. Credit hours must be whole numbers from 1 to 4.</p>
             <p class="small-note">Sample grading scale: <span id="GradeScale"></span>. This is a classroom scale, not an official AIUB policy. Retake replacement is not included.</p>
@@ -89,10 +100,48 @@
                 <div class="form-buttons"><button type="submit">Calculate GPA</button><button class="secondary" type="reset">Reset</button></div>
             </form>
         </section>
-
-        <section class="tool-section" id="semester-planner">
+                <section id="prerequisite-checker" class="dashboard-section" data-dashboard-section data-title="Prerequisite Checker" data-description="Check course eligibility against the sample academic profile.">
+                    <article class="panel">
+                        <div class="panel-header"><div><h2>Check Course Eligibility</h2><p>Select a course to check its prerequisites and minimum credits.</p></div></div>
+                        <form id="PrerequisiteForm" onsubmit="return checkPrerequisite()" onreset="resetPrerequisiteForm()" onchange="clearPrerequisiteResult()" novalidate>
+                            <fieldset disabled><legend>Course selection</legend><div class="form-row"><label for="PrerequisiteCourse">Course</label><select id="PrerequisiteCourse" required aria-describedby="PrerequisiteCourseError"><option value="">Select a course</option></select><p id="PrerequisiteCourseError" class="error"></p></div></fieldset>
+                            <p id="PrerequisiteResult" class="message" role="status" aria-live="polite"></p>
+                            <div class="form-buttons"><button type="submit">Check Eligibility</button><button class="secondary" type="reset">Reset</button></div>
+                        </form>
+                    </article>
+                    <article class="panel"><h2>Eligibility Result</h2><p id="EligibilityExplanation">Choose a course to see its requirements.</p><div id="EligibilityRequirements"></div></article>
+                </section>
+        <section class="dashboard-section panel" data-dashboard-section data-title="Course Recommendations" data-description="Explore eligible courses and understand the sample rules." id="course-recommendations">
+            <h3>Course Recommendations</h3>
+            <p>These course cards use Amina's sample academic profile. Add an eligible course directly to the semester planner.</p>
+            <p id="RecommendationCardMessage" class="message" role="status" aria-live="polite"></p>
+            <div id="SampleRecommendationCards"></div>
+            <details>
+                <summary>Try different completed courses</summary>
+                <p class="small-note">This what-if form does not edit the sample transcript or graduation totals. Leave every box empty if none are completed yet.</p>
+            <form id="RecommendationForm" onsubmit="return recommendCourses()" onreset="resetRecommendations()" onchange="clearRecommendations()" novalidate>
+                <fieldset disabled>
+                    <legend>Completed courses</legend>
+                    <div id="CompletedCourses" class="checkbox-list"></div>
+                    <p id="CompletedCoursesError" class="error"></p>
+                </fieldset>
+                <p id="RecommendationResult" class="message" role="status" aria-live="polite"></p>
+                <div class="form-buttons"><button type="submit">Show recommendations</button><button class="secondary" type="reset">Reset</button></div>
+            </form>
+            <div class="table-scroll">
+                <table>
+                    <caption>Eligibility under the sample course rules</caption>
+                    <thead><tr><th scope="col">Course</th><th scope="col">Eligibility</th><th scope="col">Reason</th></tr></thead>
+                    <tbody id="RecommendationRows"></tbody>
+                </table>
+            </div>
+            </details>
+        </section>
+        <section class="dashboard-section panel" data-dashboard-section data-title="Semester Planner" data-description="Build your next semester using sample course offerings." id="semester-planner">
             <h3>Semester Planner</h3>
             <p>Choose a semester and courses from its available sample offerings. The demo credit limit is <strong id="PlannerLimit">18</strong>.</p>
+            <div class="summary-box"><strong id="PlannerSelectedCount">0</strong> courses selected <span aria-hidden="true"> · </span> Demo limit: <strong id="PlannerHeaderLimit">18</strong> credits</div>
+            <p id="PlannerAddMessage" class="message" role="status" aria-live="polite"></p>
             <form id="PlannerForm" onsubmit="return validateSemesterPlan()" onreset="resetPlannerForm()" novalidate>
                 <fieldset disabled>
                     <legend>Semester and courses</legend>
@@ -110,35 +159,32 @@
                 <div class="form-buttons"><button type="submit">Prepare plan</button><button class="secondary" type="reset">Reset</button></div>
             </form>
         </section>
-
-        <section class="tool-section" id="course-recommendations">
-            <h3>Course Recommendations</h3>
-            <p>Select the courses you have completed. Leave every box empty if none are completed yet. Recommendations use the sample prerequisite rules only.</p>
-            <form id="RecommendationForm" onsubmit="return recommendCourses()" onreset="resetRecommendations()" onchange="clearRecommendations()" novalidate>
-                <fieldset disabled>
-                    <legend>Completed courses</legend>
-                    <div id="CompletedCourses" class="checkbox-list"></div>
-                    <p id="CompletedCoursesError" class="error"></p>
-                </fieldset>
-                <p id="RecommendationResult" class="message" role="status" aria-live="polite"></p>
-                <div class="form-buttons"><button type="submit">Show recommendations</button><button class="secondary" type="reset">Reset</button></div>
-            </form>
-            <div class="table-scroll">
-                <table>
-                    <caption>Eligibility under the sample course rules</caption>
-                    <thead><tr><th scope="col">Course</th><th scope="col">Eligibility</th><th scope="col">Reason</th></tr></thead>
-                    <tbody id="RecommendationRows"></tbody>
-                </table>
+                <section id="graduation-tracker" class="dashboard-section" data-dashboard-section data-title="Graduation Tracker" data-description="Track completed credits and remaining curriculum requirements.">
+                    <article class="panel"><div class="panel-header"><div><h2>Graduation Overview</h2><p>A complete fictional 120-credit teaching curriculum, not official AIUB requirements.</p></div></div><div class="stat-grid"><div><strong id="GraduationPercent">0%</strong><p>Degree progress</p></div><div><strong id="GraduationCredits">0 / 0</strong><p>Credits earned</p></div><div><strong id="GraduationRemaining">0</strong><p>Credits remaining</p></div></div><progress id="GraduationProgress" class="progress-bar" value="0" max="100">0%</progress><p id="GraduationReadiness"></p></article>
+                    <article class="panel"><div class="panel-header"><div><h2>Remaining Requirements</h2><p>Category totals come from the same course catalog and transcript.</p></div></div><div id="GraduationCategories"></div><details><summary>View remaining courses</summary><ul id="GraduationCourseList"></ul></details></article>
+                </section>
+                <section id="academic-assistant" class="dashboard-section" data-dashboard-section data-title="Academic Assistant" data-description="Ask about sample courses, planning, prerequisites, and graduation.">
+                    <article class="panel">
+                        <div class="panel-header"><div><h2>Academic Assistant</h2><p>Predefined JavaScript responses. No AI service or external connection.</p></div></div>
+                        <div id="AssistantMessages" class="chat-log" role="log" aria-live="polite"></div>
+                        <h3>Suggested Questions</h3>
+                        <div class="quick-actions"><button class="action-link" type="button" onclick="askSuggestedQuestion('What courses should I take next semester?')">📖 What courses should I take next semester? →</button><button class="action-link" type="button" onclick="askSuggestedQuestion('Am I eligible for CSE301?')">🔗 Am I eligible for CSE301? →</button><button class="action-link" type="button" onclick="askSuggestedQuestion('What requirements do I have left?')">🎓 What requirements do I have left? →</button></div>
+                        <form id="AssistantForm" onsubmit="return askAcademicAssistant()" onreset="resetAcademicAssistant()" oninput="clearResult('AssistantResult')" novalidate>
+                            <fieldset disabled><legend>Your question</legend><div class="form-row"><label for="AssistantQuestion">Ask about your academic plan</label><input id="AssistantQuestion" type="text" required maxlength="300" placeholder="Ask about your academic plan…" aria-describedby="AssistantQuestionError"><p class="error" id="AssistantQuestionError"></p></div></fieldset>
+                            <p id="AssistantResult" class="message" role="status" aria-live="polite"></p><div class="form-buttons"><button type="submit">Send →</button><button class="secondary" type="reset">Clear Conversation</button></div>
+                        </form>
+                    </article>
+                </section>
+                <section id="academic-alerts" class="dashboard-section panel" data-dashboard-section data-title="Academic Alerts" data-description="Planning reminders calculated from your sample academic profile."><h2>Academic Alerts</h2><ul id="AllAcademicAlerts"></ul><a class="button" href="#prerequisite-checker">Check a Course</a></section>
+                <p class="dashboard-note">Sample profile only. Changes reset when you refresh or leave this page. Web Technologies · Fall 2026–27 · Group 9.</p>
             </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p>Web Technologies | Fall 2026–27 | Group 9</p>
-        <p>Frontend demonstration with sample data.</p>
-    </footer>
+        </main>
+    </div>
     <script src="../JS/Common.js"></script>
     <script src="../JS/AcademicData.js"></script>
+    <script src="../JS/Version4Data.js"></script>
+    <script src="../JS/Dashboard.js"></script>
     <script src="JS/StudentDashboard.js"></script>
+    <script src="JS/StudentFeatures.js"></script>
 </body>
 </html>

@@ -6,79 +6,64 @@
     <link rel="icon" href="../Images/StudyBuddyLogo.png" type="image/png">
     <title>StudyBuddy - Administrator Dashboard</title>
     <link rel="stylesheet" href="../Design/Style.css">
+    <link rel="stylesheet" href="../Design/Dashboard.css">
 </head>
-<body class="admin" onload="loadAdminDashboard()">
-    <header class="header">
-        <div class="brand">
-            <a href="../index.html" aria-label="StudyBuddy home">
-                <img class="project-logo" src="../Images/StudyBuddyLogo.png" alt="StudyBuddy logo: two students and an open book" width="76" height="72">
+<body class="admin dashboard" onload="loadAdminDashboard()">
+    <div class="app-layout">
+        <aside id="DashboardSidebar" class="sidebar">
+            <a class="sidebar-brand" href="../index.html">
+                <img src="../Images/StudyBuddyLogo.png" alt="StudyBuddy logo" width="44" height="42">
+                <span><strong>StudyBuddy</strong><small>Academic Planning</small></span>
             </a>
-            <h1>StudyBuddy</h1>
-        </div>
-        <p>Student Academic Planning and Course Recommendation System</p>
-    </header>
-
-    <nav class="topnav" aria-label="Administrator Dashboard navigation">
-        <a href="../index.html">Home</a>
-        <a href="AdminDashboard.html" class="active" aria-current="page">Dashboard</a>
-        <a href="../Login.html">Login / Switch Role</a>
-    </nav>
-
-    <main class="page">
-        <h2>Administrator Dashboard</h2>
-        <p>Search sample student records and add courses to the catalog below.</p>
-        <p class="small-note">This is a frontend demonstration with fictional data. Changes stay on this page and reset when you refresh or leave it.</p>
-        <noscript><p class="message failed">Please enable JavaScript to search students and add courses.</p></noscript>
-
-        <div class="table-scroll">
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Tool</th>
-                        <th scope="col">Use</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="#student-management">Student Search</a></td>
-                        <td>Find a student by ID, name, email or department.</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#course-management">Add Course</a></td>
-                        <td>Validate a new course and update this page's catalog.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <section class="tool-section" id="student-management">
-            <h3>Student Search</h3>
-            <form id="StudentSearchForm" onsubmit="return searchStudents()" onreset="resetStudentSearch()" oninput="clearStudentSearchResults()" novalidate>
-                <fieldset disabled>
-                    <legend>Search Sample Students</legend>
-                    <div class="form-row">
-                        <label for="StudentQuery">Student ID, name, email or department</label>
-                        <input id="StudentQuery" type="text" placeholder="For example: Amina, CSE or 26-12345-3" required aria-describedby="StudentQueryHint StudentQueryError">
-                        <p class="small-note" id="StudentQueryHint">Enter at least 2 characters. Matching ignores letter case.</p>
-                        <p class="error" id="StudentQueryError"></p>
-                    </div>
-                </fieldset>
-                <p id="SearchResult" class="message" role="status" aria-live="polite"></p>
-                <div class="form-buttons">
-                    <button type="submit">Search</button>
-                    <button class="secondary" type="reset">Reset Search</button>
+            <nav class="sidebar-nav" aria-label="Administrator Dashboard navigation">
+                <p class="sidebar-group">MAIN</p>
+                <a href="#overview" data-section="overview">Dashboard</a>
+                <p class="sidebar-group">ACADEMIC DATA</p>
+                <a href="#course-management" data-section="course-management">Manage Courses</a>
+                <a href="#prerequisite-rules" data-section="prerequisite-rules">Prerequisite Rules</a>
+                <a href="#graduation-requirements" data-section="graduation-requirements">Graduation Requirements</a>
+                <p class="sidebar-group">SYSTEM</p>
+                <a href="#student-management" data-section="student-management">Student Records</a>
+                <a href="#academic-policies" data-section="academic-policies">Academic Policies</a>
+            </nav>
+            <div class="sidebar-bottom"><a href="../index.html">Home</a><a href="../Login.html">Login / Switch role</a><p>Web Technologies · Group 9</p></div>
+        </aside>
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <button id="SidebarToggle" class="sidebar-toggle" type="button" onclick="toggleDashboardSidebar()" aria-controls="DashboardSidebar" aria-expanded="false" aria-label="Open navigation">☰</button>
+                <div><h1 id="DashboardTitle" tabindex="-1">Administrator Dashboard</h1><p id="DashboardSubtitle">Manage the sample academic information and planning records.</p></div>
+                <div class="header-actions">
+                    <a class="icon-button" href="#academic-policies" aria-label="View academic information">🔔</a>
+                    <details class="profile-menu"><summary><span class="avatar">AD</span> Administrator <span aria-hidden="true">⌄</span></summary><p class="small-note">Sample role workspace</p><a href="../index.html">Home</a><a href="../Login.html">Switch role</a></details>
                 </div>
-            </form>
-            <div id="StudentSearchTable" class="table-scroll" hidden>
-                <table>
-                    <caption>Matching sample students</caption>
-                    <thead><tr><th scope="col">Student ID</th><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Department</th><th scope="col">Completed Courses</th></tr></thead>
-                    <tbody id="StudentSearchRows"></tbody>
-                </table>
+            </header>
+            <div class="dashboard-content">
+                <noscript><p class="message failed">Enable JavaScript to use the dashboard tools.</p></noscript>
+        <section class="dashboard-section" id="overview" data-dashboard-section data-title="Administrator Dashboard" data-description="Manage academic information, prerequisite rules, and sample system records.">
+            <div class="stat-grid three">
+                <article class="stat-card"><span class="metric-icon blue" aria-hidden="true">📖</span><div><p>Total Courses</p><strong id="AdminCourseCount">0</strong><small>Courses in the sample catalog</small></div></article>
+                <article class="stat-card"><span class="metric-icon green" aria-hidden="true">🔗</span><div><p>Prerequisite Rules</p><strong id="AdminRuleCount">0</strong><small>Active prerequisite mappings</small></div></article>
+                <article class="stat-card"><span class="metric-icon pink" aria-hidden="true">🎓</span><div><p>Graduation Groups</p><strong id="AdminRequirementCount">0</strong><small>Sample curriculum requirements</small></div></article>
+            </div>
+            <div class="content-grid">
+                <div class="wide-column">
+                    <article class="panel">
+                        <div class="panel-header"><div><h2>Academic Information Management</h2><p>Review the data used by the academic planning tools.</p></div></div>
+                        <div class="quick-actions">
+                            <a class="action-link" href="#course-management"><span class="metric-icon blue" aria-hidden="true">📖</span><span><strong>Course Information</strong><small>Add a course or review titles and credit values.</small></span><span class="tag">Manage →</span></a>
+                            <a class="action-link" href="#prerequisite-rules"><span class="metric-icon green" aria-hidden="true">🔗</span><span><strong>Prerequisite Rules</strong><small>Review the relationships between sample courses.</small></span><span class="tag">View →</span></a>
+                            <a class="action-link" href="#graduation-requirements"><span class="metric-icon pink" aria-hidden="true">🎓</span><span><strong>Graduation Requirements</strong><small>View core, major, and elective requirements.</small></span><span class="tag">View →</span></a>
+                        </div>
+                    </article>
+                    <article class="panel"><div class="stat-grid three compact"><div><small>Students</small><strong id="AdminStudentCount">0</strong></div><div><small>Departments</small><strong id="AdminDepartmentCount">0</strong></div><div><small>Curriculum credits</small><strong id="AdminCurriculumCredits">0</strong></div></div></article>
+                </div>
+                <div class="side-column">
+                    <article class="panel"><h2>Administrator Quick Actions</h2><div class="quick-actions"><a class="action-link" href="#course-management">＋ Add New Course <span aria-hidden="true">›</span></a><a class="action-link" href="#prerequisite-rules">🔗 View Prerequisite Rules <span aria-hidden="true">›</span></a><a class="action-link" href="#graduation-requirements">🎓 View Graduation Requirements <span aria-hidden="true">›</span></a><a class="action-link" href="#student-management">⌕ Search Student Records <span aria-hidden="true">›</span></a></div></article>
+                    <article class="info-card"><h3>Academic Data</h3><p>The sample catalog and program requirements are teaching examples. Adding a catalog course does not automatically change the graduation curriculum.</p><a href="#academic-policies">View academic policies →</a></article>
+                </div>
             </div>
         </section>
-
-        <section class="tool-section" id="course-management">
+        <section class="dashboard-section panel" id="course-management" data-dashboard-section data-title="Add Course" data-description="Use the fictional teaching records on this page.">
             <h3>Add Course</h3>
             <p class="small-note">Course codes and credit limits below are project examples, not official university rules.</p>
             <form id="AddCourseForm" onsubmit="return validateAddCourseForm()" onreset="resetAddCourseForm()" oninput="clearResult('CourseResult')" onchange="clearResult('CourseResult')" novalidate>
@@ -87,7 +72,7 @@
                     <div class="form-grid">
                         <div class="form-row">
                             <label for="CourseCode">Course Code</label>
-                            <input id="CourseCode" type="text" placeholder="CSE302" required aria-describedby="CourseCodeHint CourseCodeError">
+                            <input id="CourseCode" type="text" placeholder="CSE408" required aria-describedby="CourseCodeHint CourseCodeError">
                             <p class="small-note" id="CourseCodeHint">2 to 4 letters followed by 3 digits. Letters are converted to uppercase.</p>
                             <p class="error" id="CourseCodeError"></p>
                         </div>
@@ -137,14 +122,49 @@
                 </table>
             </div>
         </section>
-    </main>
-
-    <footer class="footer">
-        <p>Web Technologies | Fall 2026–27 | Group 9</p>
-        <p>Frontend demonstration with sample data.</p>
-    </footer>
+        <section class="dashboard-section panel" id="student-management" data-dashboard-section data-title="Student Search" data-description="Use the fictional teaching records on this page.">
+            <h3>Student Search</h3>
+            <form id="StudentSearchForm" onsubmit="return searchStudents()" onreset="resetStudentSearch()" oninput="clearStudentSearchResults()" novalidate>
+                <fieldset disabled>
+                    <legend>Search Sample Students</legend>
+                    <div class="form-row">
+                        <label for="StudentQuery">Student ID, name, email or department</label>
+                        <input id="StudentQuery" type="text" placeholder="For example: Amina, CSE or 26-12345-3" required aria-describedby="StudentQueryHint StudentQueryError">
+                        <p class="small-note" id="StudentQueryHint">Enter at least 2 characters. Matching ignores letter case.</p>
+                        <p class="error" id="StudentQueryError"></p>
+                    </div>
+                </fieldset>
+                <p id="SearchResult" class="message" role="status" aria-live="polite"></p>
+                <div class="form-buttons">
+                    <button type="submit">Search</button>
+                    <button class="secondary" type="reset">Reset Search</button>
+                </div>
+            </form>
+            <div id="StudentSearchTable" class="table-scroll" hidden>
+                <table>
+                    <caption>Matching sample students</caption>
+                    <thead><tr><th scope="col">Student ID</th><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Department</th><th scope="col">Completed Courses</th></tr></thead>
+                    <tbody id="StudentSearchRows"></tbody>
+                </table>
+            </div>
+        </section>
+        <section class="dashboard-section panel" id="prerequisite-rules" data-dashboard-section data-title="Prerequisite Rules" data-description="Review the prerequisites and credit requirements in the sample catalog.">
+            <h2>Course Prerequisites</h2><p>These rules are predefined teaching examples, not official university records.</p><div class="table-scroll"><table><caption>Sample prerequisite mappings</caption><thead><tr><th scope="col">Course</th><th scope="col">Required prerequisites</th><th scope="col">Minimum credits</th></tr></thead><tbody id="AdminPrerequisiteRows"></tbody></table></div>
+        </section>
+        <section class="dashboard-section panel" id="graduation-requirements" data-dashboard-section data-title="Graduation Requirements" data-description="View the complete fictional curriculum used by the Student tracker.">
+            <h2>Program Requirements</h2><p>The teaching curriculum contains <strong id="AdminDegreeCredits">0</strong> credits. It is not an official AIUB curriculum.</p><div class="table-scroll"><table><caption>Sample requirement groups</caption><thead><tr><th scope="col">Group</th><th scope="col">Courses</th><th scope="col">Credits</th></tr></thead><tbody id="AdminRequirementRows"></tbody></table></div>
+        </section>
+        <section class="dashboard-section panel" id="academic-policies" data-dashboard-section data-title="Academic Policies" data-description="Read the assumptions used by this frontend demonstration.">
+            <h2>Sample Academic Rules</h2><ul><li>Semester credit limit: <strong id="AdminPolicyCreditLimit">0</strong>.</li><li>Course credits are whole numbers from 1 to 4.</li><li>GPA uses a credit-weighted average. Retake replacement is not implemented.</li><li>Catalog additions are temporary and do not change the fixed demonstration degree curriculum.</li></ul><p>Sample grade scale: <span id="AdminPolicyGrades"></span>.</p><p class="small-note">These assumptions support classroom demonstrations; they do not verify official AIUB eligibility or records.</p>
+        </section>
+                <footer class="dashboard-footer"><p>Fictional teaching data. Changes reset when you refresh or leave this page and are not shared with other dashboards.</p><p>StudyBuddy · Web Technologies · Fall 2026–27 · Group 9</p></footer>
+            </div>
+        </main>
+    </div>
     <script src="../JS/Common.js"></script>
     <script src="../JS/AcademicData.js"></script>
+    <script src="../JS/Version4Data.js"></script>
+    <script src="../JS/Dashboard.js"></script>
     <script src="JS/AdminDashboard.js"></script>
 </body>
 </html>

@@ -27,6 +27,8 @@ function loadAdvisorDashboard()
     }
     document.getElementById("AdvisingCreditLimit").textContent = "Demo course credit limit: " + semesterCreditLimit + ".";
     displayCoursePlans();
+    renderAdvisorOverview();
+    initializeDashboard("overview");
 }
 
 function loadAdvisingCourses()
@@ -134,6 +136,7 @@ function validateAdvisingForm()
         };
         advisingNotes.push(note);
         displayAdvisingNotes();
+        renderAdvisorOverview();
         showResult("AdvisingResult", true, "Advising note added to this page only. It will reset when you refresh or leave.");
     }
     else
@@ -258,6 +261,98 @@ function updatePlanStatus(planId)
     select.removeAttribute("aria-invalid");
     plan.status = status;
     document.getElementById("PlanStatus" + planId).textContent = status;
+    renderAdvisorOverview();
     showResult("ReviewResult", true, planId + " is now " + status + " on this page only.");
     return false;
+}
+
+function addAdvisorCell(row, text)
+{
+    let cell = document.createElement("td");
+    cell.textContent = text;
+    row.appendChild(cell);
+}
+
+function renderAdvisorOverview()
+{
+    let studentRows = document.getElementById("AdvisorStudentRows");
+    let progressCards = document.getElementById("AdvisorProgressCards");
+    let attentionRows = document.getElementById("AdvisorAttentionRows");
+    studentRows.textContent = "";
+    progressCards.textContent = "";
+    attentionRows.textContent = "";
+    let totalGPA = 0;
+    for (let i = 0; i < academicStudents.length; i++)
+    {
+        let student = academicStudents[i];
+        let progress = getDemoProgress(student.id);
+        totalGPA += progress.gpa;
+        let row = document.createElement("tr");
+        addAdvisorCell(row, student.name);
+        addAdvisorCell(row, student.id);
+        addAdvisorCell(row, student.department);
+        addAdvisorCell(row, progress.gpa.toFixed(2));
+        addAdvisorCell(row, progress.credits + " / " + progress.totalCredits);
+        studentRows.appendChild(row);
+
+        let card = document.createElement("article");
+        card.className = "course-card";
+        let heading = document.createElement("h3");
+        heading.textContent = student.name + " - " + student.id;
+        card.appendChild(heading);
+        let description = document.createElement("p");
+        description.textContent = progress.completedCount + " completed courses; " + progress.credits + " of " + progress.totalCredits + " sample credits; CGPA " + progress.gpa.toFixed(2) + ".";
+        card.appendChild(description);
+        let bar = document.createElement("progress");
+        bar.className = "progress-bar";
+        bar.max = progress.totalCredits;
+        bar.value = progress.credits;
+        bar.textContent = progress.percent + "%";
+        bar.setAttribute("aria-label", student.name + ": " + progress.percent + "% of sample credits completed");
+        card.appendChild(bar);
+        progressCards.appendChild(card);
+    }
+    let pending = 0;
+    let revision = 0;
+    let approved = 0;
+    for (let i = 0; i < academicPlans.length; i++)
+    {
+        let plan = academicPlans[i];
+        if (plan.status === "Approved") { approved++; }
+        if (plan.status === "Pending") { pending++; }
+        if (plan.status === "Needs Revision") { revision++; }
+        if (plan.status === "Pending" || plan.status === "Needs Revision")
+        {
+            let student = getAcademicStudent(plan.studentId);
+            let row = document.createElement("tr");
+            addAdvisorCell(row, student.name);
+            addAdvisorCell(row, student.id);
+            addAdvisorCell(row, getDemoProgress(student.id).gpa.toFixed(2));
+            addAdvisorCell(row, plan.id + " - " + plan.status);
+            let action = document.createElement("td");
+            let link = document.createElement("a");
+            link.className = "button";
+            link.href = "#course-plan-review";
+            link.textContent = "Review";
+            link.setAttribute("aria-label", "Review " + plan.id + " for " + student.name);
+            action.appendChild(link);
+            row.appendChild(action);
+            attentionRows.appendChild(row);
+        }
+    }
+    if (pending + revision === 0)
+    {
+        let row = document.createElement("tr");
+        let cell = document.createElement("td");
+        cell.colSpan = 5;
+        cell.textContent = "All sample plans have been approved.";
+        row.appendChild(cell);
+        attentionRows.appendChild(row);
+    }
+    document.getElementById("AdvisorAssignedCount").textContent = academicStudents.length;
+    document.getElementById("AdvisorPendingCount").textContent = pending;
+    document.getElementById("AdvisorAlertCount").textContent = revision;
+    document.getElementById("AdvisorAverageGPA").textContent = academicStudents.length > 0 ? (totalGPA / academicStudents.length).toFixed(2) : "0.00";
+    document.getElementById("AdvisorApprovedCount").textContent = approved;
+    document.getElementById("AdvisorNoteCount").textContent = advisingNotes.length;
 }

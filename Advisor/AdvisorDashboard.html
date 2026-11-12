@@ -6,32 +6,56 @@
     <link rel="icon" href="../Images/StudyBuddyLogo.png" type="image/png">
     <title>StudyBuddy - Faculty Advisor Dashboard</title>
     <link rel="stylesheet" href="../Design/Style.css">
+    <link rel="stylesheet" href="../Design/Dashboard.css">
 </head>
-<body class="advisor" onload="loadAdvisorDashboard()">
-    <header class="header">
-        <div class="brand">
-            <a href="../index.html" aria-label="StudyBuddy home">
-                <img class="project-logo" src="../Images/StudyBuddyLogo.png" alt="StudyBuddy logo: two students and an open book" width="76" height="72">
+<body class="advisor dashboard" onload="loadAdvisorDashboard()">
+    <div class="app-layout">
+        <aside id="DashboardSidebar" class="sidebar">
+            <a class="sidebar-brand" href="../index.html">
+                <img src="../Images/StudyBuddyLogo.png" alt="StudyBuddy logo" width="44" height="42">
+                <span><strong>StudyBuddy</strong><small>Academic Planning</small></span>
             </a>
-            <h1>StudyBuddy</h1>
-        </div>
-        <p>Student Academic Planning and Course Recommendation System</p>
-    </header>
-
-    <nav class="topnav" aria-label="Faculty Advisor Dashboard navigation">
-        <a href="../index.html">Home</a>
-        <a href="AdvisorDashboard.html" class="active" aria-current="page">Dashboard</a>
-        <a href="../Login.html">Login / Switch Role</a>
-    </nav>
-
-    <main class="page">
-        <h2>Faculty Advisor Dashboard</h2>
-        <p>Prepare academic advice and review the sample students' semester plans.</p>
-        <p class="small-note">Sample data only. Notes and review decisions on this page reset when you refresh or leave it.</p>
-        <p><a href="#academic-advising">Academic Advising</a> | <a href="#course-plan-review">Course Plan Review</a></p>
-        <noscript><p class="message failed">Enable JavaScript to use the advising and review tools.</p></noscript>
-
-        <section class="tool-section" id="academic-advising">
+            <nav class="sidebar-nav" aria-label="Faculty Advisor Dashboard navigation">
+                <p class="sidebar-group">MAIN</p>
+                <a href="#overview" data-section="overview">Dashboard</a>
+                <p class="sidebar-group">STUDENTS</p>
+                <a href="#student-records" data-section="student-records">Student Records</a>
+                <a href="#academic-progress" data-section="academic-progress">Academic Progress</a>
+                <p class="sidebar-group">ADVISING</p>
+                <a href="#academic-advising" data-section="academic-advising">Academic Advising</a>
+                <p class="sidebar-group">REVIEWS</p>
+                <a href="#course-plan-review" data-section="course-plan-review">Course Plan Review</a>
+            </nav>
+            <div class="sidebar-bottom"><a href="../index.html">Home</a><a href="../Login.html">Login / Switch role</a><p>Web Technologies · Group 9</p></div>
+        </aside>
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <button id="SidebarToggle" class="sidebar-toggle" type="button" onclick="toggleDashboardSidebar()" aria-controls="DashboardSidebar" aria-expanded="false" aria-label="Open navigation">☰</button>
+                <div><h1 id="DashboardTitle" tabindex="-1">Faculty Advisor Dashboard</h1><p id="DashboardSubtitle">Manage the sample academic information and planning records.</p></div>
+                <div class="header-actions">
+                    <a class="icon-button" href="#course-plan-review" aria-label="View academic information">🔔</a>
+                    <details class="profile-menu"><summary><span class="avatar">FA</span> Faculty Advisor <span aria-hidden="true">⌄</span></summary><p class="small-note">Sample role workspace</p><a href="../index.html">Home</a><a href="../Login.html">Switch role</a></details>
+                </div>
+            </header>
+            <div class="dashboard-content">
+                <noscript><p class="message failed">Enable JavaScript to use the dashboard tools.</p></noscript>
+        <section class="dashboard-section" id="overview" data-dashboard-section data-title="Faculty Advisor Dashboard" data-description="Review sample students, academic progress, and semester plans.">
+            <div class="stat-grid three">
+                <article class="stat-card"><span class="metric-icon blue" aria-hidden="true">♧</span><div><p>Assigned Students</p><strong id="AdvisorAssignedCount">0</strong><small>Students in the sample list</small></div></article>
+                <article class="stat-card"><span class="metric-icon amber" aria-hidden="true">📋</span><div><p>Pending Reviews</p><strong id="AdvisorPendingCount">0</strong><small>Plans awaiting a decision</small></div></article>
+                <article class="stat-card"><span class="metric-icon pink" aria-hidden="true">⚠</span><div><p>Academic Alerts</p><strong id="AdvisorAlertCount">0</strong><small>Plans needing revision</small></div></article>
+            </div>
+            <div class="content-grid">
+                <div class="wide-column">
+                    <article class="panel"><div class="panel-header"><div><h2>Students Requiring Attention</h2><p>Review students with pending decisions or revision requests.</p></div></div><div class="table-scroll"><table><caption>Pending and revision plans</caption><thead><tr><th scope="col">Student</th><th scope="col">ID</th><th scope="col">CGPA</th><th scope="col">Issue</th><th scope="col">Action</th></tr></thead><tbody id="AdvisorAttentionRows"></tbody></table></div><a class="button secondary" href="#student-records">View All Students →</a></article>
+                    <article class="panel"><h3>Overall Overview</h3><div class="stat-grid three compact"><div><small>Average sample CGPA</small><strong id="AdvisorAverageGPA">0</strong></div><div><small>Approved plans</small><strong id="AdvisorApprovedCount">0</strong></div><div><small>Notes added</small><strong id="AdvisorNoteCount">0</strong></div></div></article>
+                </div>
+                <div class="side-column"><article class="panel"><h2>Advisor Quick Actions</h2><div class="quick-actions"><a class="action-link" href="#student-records">⌕ View Student Records <span aria-hidden="true">›</span></a><a class="action-link" href="#academic-advising">📝 Add Advisor Note <span aria-hidden="true">›</span></a><a class="action-link" href="#course-plan-review">📋 Review Semester Plans <span aria-hidden="true">›</span></a><a class="action-link" href="#academic-progress">▥ View Academic Progress <span aria-hidden="true">›</span></a></div></article><article class="info-card"><h3>Advisor Review</h3><p>Read each student's sample progress and proposed courses before choosing a review status. Decisions remain on this page only.</p><a href="#course-plan-review">Open plan reviews →</a></article></div>
+            </div>
+        </section>
+        <section class="dashboard-section panel" id="student-records" data-dashboard-section data-title="Student Records" data-description="Review the fictional students included in this demonstration."><h2>Assigned Sample Students</h2><div class="table-scroll"><table><caption>Sample student records</caption><thead><tr><th scope="col">Student</th><th scope="col">ID</th><th scope="col">Department</th><th scope="col">CGPA</th><th scope="col">Credits</th></tr></thead><tbody id="AdvisorStudentRows"></tbody></table></div></section>
+        <section class="dashboard-section panel" id="academic-progress" data-dashboard-section data-title="Academic Progress" data-description="Compare completed credits against the fictional 120-credit curriculum."><h2>Student Progress</h2><div id="AdvisorProgressCards"></div><p class="small-note">Grade and credit values come from the same sample transcript records used by the Student dashboard. They are not authenticated university records.</p></section>
+        <section class="dashboard-section panel" id="academic-advising" data-dashboard-section data-title="Academic Advising" data-description="Use the fictional teaching records on this page.">
             <h3>Academic Advising</h3>
             <form id="AdvisingForm" onsubmit="return validateAdvisingForm()" onreset="resetAdvisingForm()" oninput="clearResult('AdvisingResult')" onchange="clearResult('AdvisingResult')" novalidate>
                 <fieldset disabled>
@@ -86,8 +110,7 @@
                 </table>
             </div>
         </section>
-
-        <section class="tool-section" id="course-plan-review">
+        <section class="dashboard-section panel" id="course-plan-review" data-dashboard-section data-title="Course Plan Review" data-description="Use the fictional teaching records on this page.">
             <h3>Course Plan Review</h3>
             <p>Change a sample plan's review status, then select Update Status. These are sample plans, not plans submitted on another dashboard.</p>
             <p id="ReviewResult" class="message" role="status" aria-live="polite"></p>
@@ -99,14 +122,14 @@
                 </table>
             </div>
         </section>
-    </main>
-
-    <footer class="footer">
-        <p>Web Technologies | Fall 2026–27 | Group 9</p>
-        <p>Frontend demonstration with sample data.</p>
-    </footer>
+                <footer class="dashboard-footer"><p>Fictional teaching data. Changes reset when you refresh or leave this page and are not shared with other dashboards.</p><p>StudyBuddy · Web Technologies · Fall 2026–27 · Group 9</p></footer>
+            </div>
+        </main>
+    </div>
     <script src="../JS/Common.js"></script>
     <script src="../JS/AcademicData.js"></script>
+    <script src="../JS/Version4Data.js"></script>
+    <script src="../JS/Dashboard.js"></script>
     <script src="JS/AdvisorDashboard.js"></script>
 </body>
 </html>
