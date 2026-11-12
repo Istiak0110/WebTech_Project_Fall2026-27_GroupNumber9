@@ -7,7 +7,10 @@ let demoAccounts = [
 ];
 
 // This array exists only while Login.html stays open. Nothing is saved to storage.
-let registeredStudents = [];
+let registeredAccounts = [];
 let programs = ["CSE", "EEE", "BBA"];
 let semesters = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
 let roles = ["student", "admin", "advisor", "coordinator"];
+let departments = ["CSE", "EEE", "BBA"];
+let designations = ["Lecturer", "Assistant Professor", "Associate Professor", "Professor"];
+let terms = ["Spring", "Summer", "Fall"];

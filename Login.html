@@ -20,7 +20,7 @@
     <nav class="topnav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="#login" onclick="showLogin(); return false;">Login</a>
-        <a href="#register" onclick="showRegistration(); return false;">Student Registration</a>
+        <a id="RegistrationNavLink" href="#register" onclick="showRegistration(); return false;" hidden>Registration</a>
     </nav>
     <main class="page form-container">
         <noscript><p class="message failed">Please enable JavaScript to use the login and registration forms.</p></noscript>
@@ -62,7 +62,9 @@
                     <button class="secondary" type="reset">Reset</button>
                 </div>
             </form>
-            <p>New student? <a href="#register" onclick="showRegistration(); return false;">Register here</a></p>
+            <p id="RegistrationPrompt" hidden><span id="RegistrationPromptText"></span> <a id="RegistrationLink" href="#register" onclick="showRegistration(); return false;">Register here</a></p>
+            <p id="AdminRegistrationMessage" class="small-note" hidden>Administrator accounts are assigned by the institution.</p>
+            <p id="SelectRoleMessage" class="small-note">Select your role to see its registration options.</p>
             <details>
                 <summary>Sample accounts</summary>
                 <p class="small-note">Password for all sample accounts: <strong>StudyBuddy1</strong></p>
@@ -81,7 +83,7 @@
             </details>
         </section>
 
-        <!-- Both forms stay on this page so temporary registration details are available to login. -->
+        <!-- Separate registration forms share this document so temporary accounts remain available to login. -->
         <section id="register" hidden>
             <h2>Student Registration</h2>
             <p class="small-note">Use fictional details and a practice password. This demo account is cleared when you refresh or leave this page.</p>
@@ -155,7 +157,166 @@
                 <div class="form-buttons">
                     <button type="submit">Register</button>
                     <button class="secondary" type="reset">Reset</button>
-                    <button id="GoToLogin" type="button" onclick="showLogin()" hidden>Go to login</button>
+                    <button id="GoToLogin" type="button" onclick="showLogin('student')" hidden>Go to login</button>
+                </div>
+            </form>
+            <p><a href="#login" onclick="showLogin(); return false;">Back to login</a></p>
+        </section>
+
+        <section id="register-advisor" hidden>
+            <h2>Faculty Advisor Registration</h2>
+            <p class="small-note">Use fictional details and a practice password. This is a frontend demonstration and creates no permanent account. Details are cleared when you refresh or leave this page.</p>
+            <form id="AdvisorRegistrationForm" onsubmit="return validateAdvisorRegistrationForm()" onreset="resetAdvisorRegistrationForm()" oninput="clearAdvisorRegistrationResult()" onchange="clearAdvisorRegistrationResult()" novalidate>
+                <fieldset disabled>
+                    <legend>Faculty Advisor Information</legend>
+                    <div class="form-row">
+                        <label for="AdvisorName">Full Name</label>
+                        <input id="AdvisorName" type="text" autocomplete="name" required aria-describedby="AdvisorNameError">
+                        <p class="error" id="AdvisorNameError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="AdvisorID">Faculty ID</label>
+                        <input id="AdvisorID" type="text" placeholder="FAC-1001" required aria-describedby="AdvisorIDHint AdvisorIDError">
+                        <p class="small-note" id="AdvisorIDHint">Project format: FAC followed by four digits, for example FAC-1001.</p>
+                        <p class="error" id="AdvisorIDError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="AdvisorEmail">Email</label>
+                        <input id="AdvisorEmail" type="email" autocomplete="email" required aria-describedby="AdvisorEmailError">
+                        <p class="error" id="AdvisorEmailError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="AdvisorPhone">Phone Number (optional)</label>
+                        <input id="AdvisorPhone" type="tel" placeholder="01712345678" autocomplete="tel-national" aria-describedby="AdvisorPhoneError">
+                        <p class="error" id="AdvisorPhoneError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="AdvisorDepartment">Department</label>
+                        <select id="AdvisorDepartment" required aria-describedby="AdvisorDepartmentError">
+                            <option value="">Select an option</option>
+                            <option value="CSE">Computer Science and Engineering</option>
+                            <option value="EEE">Electrical and Electronic Engineering</option>
+                            <option value="BBA">Business Administration</option>
+                        </select>
+                        <p class="error" id="AdvisorDepartmentError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="AdvisorDesignation">Designation</label>
+                        <select id="AdvisorDesignation" required aria-describedby="AdvisorDesignationError">
+                            <option value="">Select an option</option>
+                            <option value="Lecturer">Lecturer</option>
+                            <option value="Assistant Professor">Assistant Professor</option>
+                            <option value="Associate Professor">Associate Professor</option>
+                            <option value="Professor">Professor</option>
+                        </select>
+                        <p class="error" id="AdvisorDesignationError"></p>
+                    </div>
+                </fieldset>
+                <fieldset disabled>
+                    <legend>Password</legend>
+                    <div class="form-row">
+                        <label for="AdvisorPassword">Password</label>
+                        <input id="AdvisorPassword" type="password" autocomplete="new-password" required aria-describedby="AdvisorPasswordHint AdvisorPasswordError">
+                        <p class="small-note" id="AdvisorPasswordHint">At least 8 characters, including an uppercase letter, a lowercase letter and a number.</p>
+                        <p class="error" id="AdvisorPasswordError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="AdvisorConfirmPassword">Confirm Password</label>
+                        <input id="AdvisorConfirmPassword" type="password" autocomplete="new-password" required aria-describedby="AdvisorConfirmPasswordError">
+                        <p class="error" id="AdvisorConfirmPasswordError"></p>
+                    </div>
+                    <label class="choice">
+                        <input id="ShowAdvisorPassword" type="checkbox" onclick="togglePassword('AdvisorPassword', this); togglePassword('AdvisorConfirmPassword', this)">
+                        Show passwords
+                    </label>
+                </fieldset>
+                <p id="AdvisorResult" class="message" role="status" aria-live="polite"></p>
+                <div class="form-buttons">
+                    <button type="submit">Register</button>
+                    <button class="secondary" type="reset">Reset</button>
+                    <button id="AdvisorGoToLogin" type="button" onclick="showLogin('advisor')" hidden>Go to login</button>
+                </div>
+            </form>
+            <p><a href="#login" onclick="showLogin(); return false;">Back to login</a></p>
+        </section>
+
+        <section id="register-coordinator" hidden>
+            <h2>Academic Coordinator Registration</h2>
+            <p class="small-note">Use fictional details and a practice password. This is a frontend demonstration and creates no permanent account. Details are cleared when you refresh or leave this page.</p>
+            <form id="CoordinatorRegistrationForm" onsubmit="return validateCoordinatorRegistrationForm()" onreset="resetCoordinatorRegistrationForm()" oninput="clearCoordinatorRegistrationResult()" onchange="clearCoordinatorRegistrationResult()" novalidate>
+                <fieldset disabled>
+                    <legend>Academic Coordinator Information</legend>
+                    <div class="form-row">
+                        <label for="CoordinatorName">Full Name</label>
+                        <input id="CoordinatorName" type="text" autocomplete="name" required aria-describedby="CoordinatorNameError">
+                        <p class="error" id="CoordinatorNameError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="CoordinatorID">Coordinator ID</label>
+                        <input id="CoordinatorID" type="text" placeholder="COR-1001" required aria-describedby="CoordinatorIDHint CoordinatorIDError">
+                        <p class="small-note" id="CoordinatorIDHint">Project format: COR followed by four digits, for example COR-1001.</p>
+                        <p class="error" id="CoordinatorIDError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="CoordinatorEmail">Email</label>
+                        <input id="CoordinatorEmail" type="email" autocomplete="email" required aria-describedby="CoordinatorEmailError">
+                        <p class="error" id="CoordinatorEmailError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="CoordinatorPhone">Phone Number (optional)</label>
+                        <input id="CoordinatorPhone" type="tel" placeholder="01712345678" autocomplete="tel-national" aria-describedby="CoordinatorPhoneError">
+                        <p class="error" id="CoordinatorPhoneError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="CoordinatorDepartment">Department</label>
+                        <select id="CoordinatorDepartment" required aria-describedby="CoordinatorDepartmentError">
+                            <option value="">Select an option</option>
+                            <option value="CSE">Computer Science and Engineering</option>
+                            <option value="EEE">Electrical and Electronic Engineering</option>
+                            <option value="BBA">Business Administration</option>
+                        </select>
+                        <p class="error" id="CoordinatorDepartmentError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="CoordinatorTerm">Assigned Semester</label>
+                        <select id="CoordinatorTerm" required aria-describedby="CoordinatorTermError">
+                            <option value="">Select an option</option>
+                            <option value="Spring">Spring</option>
+                            <option value="Summer">Summer</option>
+                            <option value="Fall">Fall</option>
+                        </select>
+                        <p class="error" id="CoordinatorTermError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="CoordinatorYear">Academic Year</label>
+                        <input id="CoordinatorYear" type="text" placeholder="2026-27" required aria-describedby="CoordinatorYearHint CoordinatorYearError">
+                        <p class="small-note" id="CoordinatorYearHint">Use consecutive years, for example 2026-27. Demo start years: 2020 to 2100.</p>
+                        <p class="error" id="CoordinatorYearError"></p>
+                    </div>
+                </fieldset>
+                <fieldset disabled>
+                    <legend>Password</legend>
+                    <div class="form-row">
+                        <label for="CoordinatorPassword">Password</label>
+                        <input id="CoordinatorPassword" type="password" autocomplete="new-password" required aria-describedby="CoordinatorPasswordHint CoordinatorPasswordError">
+                        <p class="small-note" id="CoordinatorPasswordHint">At least 8 characters, including an uppercase letter, a lowercase letter and a number.</p>
+                        <p class="error" id="CoordinatorPasswordError"></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="CoordinatorConfirmPassword">Confirm Password</label>
+                        <input id="CoordinatorConfirmPassword" type="password" autocomplete="new-password" required aria-describedby="CoordinatorConfirmPasswordError">
+                        <p class="error" id="CoordinatorConfirmPasswordError"></p>
+                    </div>
+                    <label class="choice">
+                        <input id="ShowCoordinatorPassword" type="checkbox" onclick="togglePassword('CoordinatorPassword', this); togglePassword('CoordinatorConfirmPassword', this)">
+                        Show passwords
+                    </label>
+                </fieldset>
+                <p id="CoordinatorResult" class="message" role="status" aria-live="polite"></p>
+                <div class="form-buttons">
+                    <button type="submit">Register</button>
+                    <button class="secondary" type="reset">Reset</button>
+                    <button id="CoordinatorGoToLogin" type="button" onclick="showLogin('coordinator')" hidden>Go to login</button>
                 </div>
             </form>
             <p><a href="#login" onclick="showLogin(); return false;">Back to login</a></p>
@@ -169,5 +330,7 @@
     <script src="JS/Data.js"></script>
     <script src="JS/Login.js"></script>
     <script src="Student/JS/StudentRegistration.js"></script>
+    <script src="Advisor/JS/AdvisorRegistration.js"></script>
+    <script src="Coordinator/JS/CoordinatorRegistration.js"></script>
 </body>
 </html>

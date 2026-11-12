@@ -11,9 +11,9 @@ function validateStudentID()
         showError("StudentID", "This ID is already used by the sample student.");
         return false;
     }
-    for (let i = 0; i < registeredStudents.length; i++)
+    for (let i = 0; i < registeredAccounts.length; i++)
     {
-        if (registeredStudents[i].id === studentID)
+        if (registeredAccounts[i].id === studentID)
         {
             showError("StudentID", "This student ID has already been registered on this page.");
             return false;
@@ -25,29 +25,7 @@ function validateStudentID()
 
 function validateStudentEmail()
 {
-    if (!validateEmail("StudentEmail"))
-    {
-        return false;
-    }
-    let email = document.getElementById("StudentEmail").value.trim().toLowerCase();
-    for (let i = 0; i < demoAccounts.length; i++)
-    {
-        if (demoAccounts[i].email === email)
-        {
-            showError("StudentEmail", "This email is already used by a sample account.");
-            return false;
-        }
-    }
-    for (let i = 0; i < registeredStudents.length; i++)
-    {
-        if (registeredStudents[i].email === email)
-        {
-            showError("StudentEmail", "This email has already been registered on this page.");
-            return false;
-        }
-    }
-    clearError("StudentEmail");
-    return true;
+    return validateRegistrationEmail("StudentEmail");
 }
 
 function validateStudentRegistrationForm()
@@ -67,6 +45,7 @@ function validateStudentRegistrationForm()
     if (isValid)
     {
         let student = {
+            role: "student",
             name: document.getElementById("StudentName").value.trim(),
             id: document.getElementById("StudentID").value.trim(),
             email: document.getElementById("StudentEmail").value.trim().toLowerCase(),
@@ -75,8 +54,8 @@ function validateStudentRegistrationForm()
             semester: document.getElementById("StudentSemester").value,
             password: document.getElementById("StudentPassword").value
         };
-        registeredStudents.push(student);
-        showResult("RegisterResult", true, "Registration successful for this demo. Click Go to login and use the email and password you entered.");
+        registeredAccounts.push(student);
+        showResult("RegisterResult", true, "Registration successful for this frontend demo. Click Go to login and use the email and password you entered. No permanent account was created.");
         document.getElementById("GoToLogin").hidden = false;
     }
     else

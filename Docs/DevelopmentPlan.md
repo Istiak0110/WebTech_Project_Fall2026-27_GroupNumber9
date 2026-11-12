@@ -4,7 +4,7 @@ StudyBuddy uses HTML, CSS, and vanilla JavaScript. The faculty's HMS examples gu
 
 ## Pages
 
-The complete plan has 17 page destinations. In this draft the registration form shares `Login.html` with login; the registration URL is a small compatibility page. This keeps a temporary account in one page's memory without browser storage.
+The complete plan has 19 page destinations. The three separate registration forms share `Login.html` with login; their role-specific entry URLs redirect to the matching sections. This keeps temporary accounts in one page's memory without browser storage.
 
 | Page destination | Work |
 |---|---|
@@ -20,9 +20,11 @@ The complete plan has 17 page destinations. In this draft the registration form 
 | Admin/StudentManagement.html | Add/edit sample student records; later. |
 | Admin/CourseManagement.html | Course catalog and prerequisites; later. |
 | Advisor/AdvisorDashboard.html | Dashboard layout; current draft. |
+| Advisor/AdvisorRegistration.html | Opens Faculty Advisor Registration; current draft. |
 | Advisor/AcademicAdvising.html | Advising form; later. |
 | Advisor/CoursePlanReview.html | Review a course plan; later. |
 | Coordinator/CoordinatorDashboard.html | Dashboard layout; current draft. |
+| Coordinator/CoordinatorRegistration.html | Opens Academic Coordinator Registration; current draft. |
 | Coordinator/CourseOffering.html | Semester offerings; later. |
 | Coordinator/SemesterSchedule.html | Class times and rooms; later. |
 
@@ -32,8 +34,10 @@ Future filenames above describe work to build; they are not working page links.
 
 | Form | Validation |
 |---|---|
-| Login | Known role, valid email, nonempty password, matching sample or temporary Student account. |
+| Login | Known role, valid email, nonempty password, matching sample or temporary account for that role. |
 | Student registration | Name, project-format ID, email, optional BD phone, known program/semester, strong demo password and matching confirmation; no duplicate ID/email. |
+| Faculty Advisor registration | Name, FAC-#### ID, unique email, optional BD phone, known department/designation, password and confirmation. |
+| Academic Coordinator registration | Name, COR-#### ID, unique email, optional BD phone, known department/term, consecutive academic year YYYY-YY starting from 2020 to 2100, password and confirmation. |
 | CGPA calculator | Complete unique course rows, valid credits and grade points, nonzero credit total; later. |
 | Semester planning | Offered sections, completed prerequisites, no duplicates, credit limit and timetable checks; later. |
 | Student management | Required details, valid fields, duplicate checks excluding the edited record; later. |
@@ -43,7 +47,9 @@ Future filenames above describe work to build; they are not working page links.
 | Course offering | Active course, term, section, integer capacity, no duplicate offering; later. |
 | Semester schedule | Offering, day, room, faculty, start before end, no room/faculty overlap; later. |
 
-Academic ID formats, credit limits, and curriculum data are project assumptions until an applicable AIUB policy is supplied. CGPA will use total credit-weighted grade points divided by total attempted credits; institution-specific retake rules need confirmation.
+The plan now includes 12 forms. Administrator has no public registration form: institutional account assignment is explained on login. Email uniqueness is checked across the three registration roles and all sample accounts.
+
+Academic ID formats, academic-year limits, credit limits, and curriculum data are project assumptions until an applicable AIUB policy is supplied. CGPA will use total credit-weighted grade points divided by total attempted credits; institution-specific retake rules need confirmation.
 
 ## Order
 

@@ -89,6 +89,53 @@ function validateEmail(inputId)
     return true;
 }
 
+function validateRegistrationEmail(inputId)
+{
+    if (!validateEmail(inputId))
+    {
+        return false;
+    }
+    let email = document.getElementById(inputId).value.trim().toLowerCase();
+    for (let i = 0; i < demoAccounts.length; i++)
+    {
+        if (demoAccounts[i].email === email)
+        {
+            showError(inputId, "This email is already used by a sample account.");
+            return false;
+        }
+    }
+    for (let i = 0; i < registeredAccounts.length; i++)
+    {
+        if (registeredAccounts[i].email === email)
+        {
+            showError(inputId, "This email has already been registered on this page.");
+            return false;
+        }
+    }
+    clearError(inputId);
+    return true;
+}
+
+function validateStaffID(inputId, expression, example)
+{
+    let staffID = document.getElementById(inputId).value.trim();
+    if (!expression.test(staffID))
+    {
+        showError(inputId, "Use the project ID format " + example + ".");
+        return false;
+    }
+    for (let i = 0; i < registeredAccounts.length; i++)
+    {
+        if (registeredAccounts[i].id === staffID)
+        {
+            showError(inputId, "This ID has already been registered on this page.");
+            return false;
+        }
+    }
+    clearError(inputId);
+    return true;
+}
+
 function validateSelect(inputId, options, label)
 {
     let value = document.getElementById(inputId).value;
