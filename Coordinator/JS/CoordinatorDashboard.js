@@ -46,6 +46,8 @@ function loadCoordinatorDashboard()
         addCoordinatorOption("FilterDepartment", academicDepartments[i], academicDepartments[i]);
     }
     renderSemesterSchedule("", "");
+    renderCoordinatorOverview();
+    initializeDashboard("overview");
 }
 
 function validateOfferingSection()
@@ -127,6 +129,7 @@ function validateCourseOfferingForm()
             schedule: document.getElementById("OfferSchedule").value
         };
         academicOfferings.push(offering);
+        renderCoordinatorOverview();
         // Keep the current filters. A new offering might be outside their results.
         filterSemesterSchedule();
         showResult("OfferingResult", true, "Offering added temporarily on this page. The schedule table uses your current filters; clear them to see all offerings.");
@@ -205,4 +208,61 @@ function resetScheduleFilters()
     document.getElementById("FilterSemester").value = "";
     document.getElementById("FilterDepartment").value = "";
     renderSemesterSchedule("", "");
+}
+
+
+function addCoordinatorCell(row, value)
+{
+    let cell = document.createElement("td");
+    cell.textContent = value;
+    row.appendChild(cell);
+}
+
+function renderCoordinatorOverview()
+{
+    let semesters = [];
+    let seats = 0;
+    for (let i = 0; i < academicOfferings.length; i++)
+    {
+        let offering = academicOfferings[i];
+        seats += offering.seats;
+        if (semesters.indexOf(offering.semester) === -1) { semesters.push(offering.semester); }
+    }
+    document.getElementById("CoordinatorOfferingCount").textContent = academicOfferings.length;
+    document.getElementById("CoordinatorSemesterCount").textContent = semesters.length;
+    document.getElementById("CoordinatorFacultyCount").textContent = academicFaculty.length;
+    document.getElementById("CoordinatorSeatCount").textContent = seats;
+    let rows = document.getElementById("CoordinatorOverviewRows");
+    rows.textContent = "";
+    for (let i = 0; i < academicOfferings.length && i < 5; i++)
+    {
+        let offering = academicOfferings[i];
+        let row = document.createElement("tr");
+        addCoordinatorCell(row, offering.courseCode);
+        addCoordinatorCell(row, offering.semester);
+        addCoordinatorCell(row, offering.section);
+        addCoordinatorCell(row, offering.seats);
+        rows.appendChild(row);
+    }
+    let facultyRows = document.getElementById("CoordinatorFacultyRows");
+    facultyRows.textContent = "";
+    for (let i = 0; i < academicFaculty.length; i++)
+    {
+        let count = 0;
+        let assignedSemesters = [];
+        for (let j = 0; j < academicOfferings.length; j++)
+        {
+            let offering = academicOfferings[j];
+            if (offering.faculty === academicFaculty[i])
+            {
+                count++;
+                if (assignedSemesters.indexOf(offering.semester) === -1) { assignedSemesters.push(offering.semester); }
+            }
+        }
+        let row = document.createElement("tr");
+        addCoordinatorCell(row, academicFaculty[i]);
+        addCoordinatorCell(row, count);
+        addCoordinatorCell(row, assignedSemesters.join(", ") || "None");
+        facultyRows.appendChild(row);
+    }
 }

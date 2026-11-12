@@ -24,6 +24,7 @@ function loadStudentDashboard()
     loadPlannerCourses();
     loadCompletedChoices();
     showSampleProgress();
+    loadStudentFeatures();
 }
 
 function showSampleProgress()
@@ -39,7 +40,12 @@ function showSampleProgress()
         if (course)
         {
             let row = document.createElement("tr");
-            let values = [course.code, course.title, course.credits, "Completed"];
+            let grade = "";
+            for (let j = 0; j < demoTranscripts[0].grades.length; j++)
+            {
+                if (demoTranscripts[0].grades[j].code === course.code) { grade = demoTranscripts[0].grades[j].grade; }
+            }
+            let values = [course.code, course.title, course.credits, grade, "Completed"];
             for (let j = 0; j < values.length; j++)
             {
                 let cell = document.createElement("td");
@@ -239,6 +245,7 @@ function loadPlannerCourses()
 
 function updatePlannerCredits()
 {
+    clearResult("PlannerAddMessage");
     let selected = getCheckedValues("plannerCourse");
     let total = 0;
     for (let i = 0; i < selected.length; i++)
@@ -250,6 +257,7 @@ function updatePlannerCredits()
     document.getElementById("PlannerSummary").textContent = "";
     document.getElementById("PlannerCoursesError").textContent = "";
     clearResult("PlannerResult");
+    document.getElementById("PlannerSelectedCount").textContent = selected.length;
 }
 
 function validateSemesterPlan()
@@ -365,22 +373,10 @@ function recommendCourses()
     for (let i = 0; i < academicCourses.length; i++)
     {
         let course = academicCourses[i];
-        let status = "Eligible";
-        let reason = "No prerequisite is required.";
-        if (completed.indexOf(course.code) !== -1)
-        {
-            status = "Already completed";
-            reason = "You selected this course as completed.";
-        }
-        else if (course.prerequisite !== "" && completed.indexOf(course.prerequisite) === -1)
-        {
-            status = "Not eligible";
-            reason = "Complete " + course.prerequisite + " first.";
-        }
-        else if (course.prerequisite !== "")
-        {
-            reason = "You completed its prerequisite, " + course.prerequisite + ".";
-        }
+        let eligibility = getCourseEligibility(course.code, completed);
+        let status = eligibility.eligible ? "Eligible" : "Not eligible";
+        if (eligibility.completed) { status = "Already completed"; }
+        let reason = eligibility.reason;
         if (status === "Eligible") { eligibleCount++; }
         let row = document.createElement("tr");
         let values = [course.code + " — " + course.title, status, reason];

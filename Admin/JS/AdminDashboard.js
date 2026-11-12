@@ -7,6 +7,8 @@ function loadAdminDashboard()
     }
     loadPrerequisiteOptions();
     renderAdminCatalog();
+    renderAdminOverview();
+    initializeDashboard("overview");
 }
 
 function loadPrerequisiteOptions()
@@ -47,7 +49,13 @@ function renderAdminCatalog()
         addAdminCell(row, course.title);
         addAdminCell(row, course.credits);
         addAdminCell(row, course.department);
-        addAdminCell(row, course.prerequisite || "None");
+        let eligibility = getCourseEligibility(course.code, []);
+        let rule = eligibility.prerequisites.join(", ") || "None";
+        if (eligibility.minimumCredits > 0)
+        {
+            rule += " / " + eligibility.minimumCredits + " earned credits";
+        }
+        addAdminCell(row, rule);
         body.appendChild(row);
     }
 }
@@ -57,7 +65,7 @@ function validateCourseCode()
     let code = document.getElementById("CourseCode").value.trim().toUpperCase();
     if (!/^[A-Z]{2,4}[0-9]{3}$/.test(code))
     {
-        showError("CourseCode", "Use 2 to 4 letters followed by 3 digits, such as CSE302.");
+        showError("CourseCode", "Use 2 to 4 letters followed by 3 digits, such as CSE408.");
         return false;
     }
     for (let i = 0; i < academicCourses.length; i++)
@@ -110,6 +118,7 @@ function validateAddCourseForm()
         academicCourses.push(course);
         renderAdminCatalog();
         loadPrerequisiteOptions();
+        renderAdminOverview();
         showResult("CourseResult", true, course.code + " was added to this page's temporary catalog. It is not saved or shared with other pages.");
     }
     else
@@ -178,4 +187,52 @@ function resetStudentSearch()
 {
     clearFormErrors("StudentSearchForm", "SearchResult");
     clearStudentSearchResults();
+}
+
+// Summary cards and rule tables read the same data as the Student tools.
+function renderAdminOverview()
+{
+    let ruleRows = document.getElementById("AdminPrerequisiteRows");
+    ruleRows.textContent = "";
+    let ruleCount = 0;
+    for (let i = 0; i < academicCourses.length; i++)
+    {
+        let course = academicCourses[i];
+        let eligibility = getCourseEligibility(course.code, []);
+        ruleCount += eligibility.prerequisites.length;
+        if (eligibility.prerequisites.length > 0 || eligibility.minimumCredits > 0)
+        {
+            let row = document.createElement("tr");
+            addAdminCell(row, course.code + " - " + course.title);
+            addAdminCell(row, eligibility.prerequisites.join(", ") || "None");
+            addAdminCell(row, eligibility.minimumCredits);
+            ruleRows.appendChild(row);
+        }
+    }
+    let progress = getDemoProgress(academicStudents[0].id);
+    let requirementRows = document.getElementById("AdminRequirementRows");
+    requirementRows.textContent = "";
+    for (let i = 0; i < progress.categories.length; i++)
+    {
+        let group = progress.categories[i];
+        let row = document.createElement("tr");
+        addAdminCell(row, group.name);
+        addAdminCell(row, group.requiredCount);
+        addAdminCell(row, group.requiredCredits);
+        requirementRows.appendChild(row);
+    }
+    document.getElementById("AdminCourseCount").textContent = academicCourses.length;
+    document.getElementById("AdminRuleCount").textContent = ruleCount;
+    document.getElementById("AdminRequirementCount").textContent = progress.categories.length;
+    document.getElementById("AdminStudentCount").textContent = academicStudents.length;
+    document.getElementById("AdminDepartmentCount").textContent = academicDepartments.length;
+    document.getElementById("AdminCurriculumCredits").textContent = progress.totalCredits;
+    document.getElementById("AdminDegreeCredits").textContent = progress.totalCredits;
+    document.getElementById("AdminPolicyCreditLimit").textContent = semesterCreditLimit;
+    let grades = [];
+    for (let i = 0; i < academicGrades.length; i++)
+    {
+        grades.push(academicGrades[i].letter + " = " + academicGrades[i].points.toFixed(2));
+    }
+    document.getElementById("AdminPolicyGrades").textContent = grades.join(", ");
 }
