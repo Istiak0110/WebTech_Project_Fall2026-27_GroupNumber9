@@ -394,3 +394,53 @@ select:focus-visible
     fieldset { padding: 12px; }
     th, td { padding: 8px; font-size: 13px; }
 }
+
+/* Dashboard tools reuse the same forms and tables as the entry pages. */
+.form-grid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
+}
+
+.course-row
+{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    align-items: start;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid #dce3eb;
+}
+
+.checkbox-list
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 18px;
+}
+
+.summary-box
+{
+    margin: 16px 0;
+    padding: 14px 18px;
+    background-color: var(--theme-light);
+    border: 1px solid #dce3eb;
+    border-radius: 6px;
+}
+
+textarea { min-height: 100px; resize: vertical; }
+input[type="search"]
+{
+    width: 100%;
+    padding: 11px;
+    box-sizing: border-box;
+    border: 1px solid #b7c4d0;
+    border-radius: 5px;
+    font: inherit;
+}
+
+@media (max-width: 600px)
+{
+    .form-grid, .course-row, .checkbox-list { grid-template-columns: 1fr; }
+}
