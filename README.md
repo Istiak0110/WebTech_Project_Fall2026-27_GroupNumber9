@@ -14,7 +14,7 @@ Milestone 1 establishes the foundation:
 
 - Home page and navigation for four roles.
 - One demo login form with role-specific dashboard destinations.
-- Student registration with JavaScript validation.
+- Student registration with validation and a temporary Student demo login.
 - Student, Administrator, Faculty Advisor, and Academic Coordinator dashboard shells.
 - Shared styling, fictional demo accounts, and temporary registration profiles.
 
@@ -22,9 +22,21 @@ Dashboard feature cards describe planned work. Their local links open the corres
 
 ## Open the project
 
-Open `index.html` in a browser. No installation or build is required. Enable JavaScript to use forms and role navigation.
+To try the public sample accounts, open `index.html` in a browser. No application installation or build is required. Enable JavaScript to use forms and role navigation.
 
-For consistent temporary data between pages, use an editor's static preview and keep the same browser tab and origin. This only serves the HTML, CSS, and JavaScript files; the application has no backend logic. Browsers can restrict storage differently when pages are opened with `file://`.
+**To register and use your own temporary Student login, open the project through a static preview**, such as VS Code Live Server. Open the whole project folder in your editor, start its static preview at `index.html`, and use the browser address it provides. Stay in the same browser tab and site address for registration and login. This only serves the HTML, CSS, and JavaScript files; the application has no backend logic.
+
+Double-clicking an HTML file opens a `file://` address. The sample accounts still work there, but creating a registered login is unavailable because direct files do not reliably share temporary accounts.
+
+## Try your own Student login
+
+1. Open `index.html` through the static preview and choose Student Registration.
+2. Enter fictional details with an unused ID and email, for example `26-54321-3` and `amina@studybuddy.example`. Choose a program and semester.
+3. Enter and confirm a password meeting the displayed rules, such as `StudyBuddy2`.
+4. Submit and wait for the message that your temporary Student demo account is ready. If storage or the browser's password-check API fails, the page explains the issue and creates no new login.
+5. Select Continue to Login in that same tab. Choose **Student**, then enter the email and password you registered. The **Fill selected role's account** button is for the public accounts below; it replaces your entered details with the selected sample account.
+
+If you registered with the older draft that only saved a profile, use Reset Demo Profiles on the home page and register again. Older profiles have no password verifier, so they cannot be used for the new temporary login.
 
 ## Demo accounts
 
@@ -35,9 +47,11 @@ For consistent temporary data between pages, use an editor's static preview and 
 | Faculty Advisor | `advisor@studybuddy.example` | `StudyBuddy1` |
 | Academic Coordinator | `coordinator@studybuddy.example` | `StudyBuddy1` |
 
-These public credentials simulate navigation. They provide no authentication or access protection. Use fictional details when trying registration. A successful registration does not create a login account; continue with the demo Student account.
+These public credentials simulate navigation and remain available for all four roles. A newly registered demo login uses only the Student role. All four published sample email addresses are reserved and cannot be used for a new registration.
 
-Registration passwords are validated but never saved. Valid profile details can be kept in `sessionStorage` for the current browser tab's session. If storage is blocked or unusable, the page uses a temporary in-memory fallback and displays its limited scope. Reset Demo removes StudyBuddy's temporary profiles and restores the seed records; it does not clear unrelated browser storage.
+The entered registration password and confirmation are never saved. The browser uses its native SHA-256 API to create a comparison value, called `passwordHash`, and saves that verifier with the fictional profile in `sessionStorage`. Login compares the verifier for the entered password. This is a browser-local classroom demonstration, not secure authentication or access protection; dashboards can still be opened directly.
+
+Registration succeeds only after the verifier is prepared and temporary storage accepts the profile. Blocked or failed storage does not create a page-only account. Temporary logins belong to the current tab and site address, are not permanently saved, and are not shared across devices. Reset Demo Profiles removes StudyBuddy's temporary profiles and restores the seed records; it does not clear unrelated browser storage.
 
 ## File organization
 

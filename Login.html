@@ -24,12 +24,13 @@
         <main class="auth-panel" id="main">
             <p class="eyebrow">Welcome to your workspace</p>
             <h1>Let's get you started.</h1>
-            <p>Choose a role and use its sample account to explore.</p>
+            <p>Use a sample account, or choose Student and enter the details you registered in this demo session.</p>
+            <p class="hint" id="DemoStatus" role="status" aria-live="polite">Registered demo accounts work in the same tab and site address.</p>
             <noscript><p class="noscript-note">JavaScript is needed to validate this form and open a dashboard.</p></noscript>
             <!-- As in the HMS sample, JavaScript checks every field before submission. -->
             <form onsubmit="return validateLoginForm()" onreset="resetLoginForm()" novalidate>
                 <fieldset disabled>
-                    <legend>Demo account details · all fields required</legend>
+                    <legend>Account details · all fields required</legend>
                     <div class="field">
                         <label for="Role">Your role</label>
                         <select id="Role" name="role" required aria-describedby="RoleError" onchange="clearAllErrors()">
@@ -55,7 +56,7 @@
                     <div class="form-actions"><button class="button secondary small" type="button" onclick="fillDemoAccount()">Fill selected role's account</button></div>
                 </details>
             </form>
-            <p class="form-bottom">Trying the student form? <a href="Student/StudentRegistration.html">Open registration</a></p>
+            <p class="form-bottom">Need a temporary student account? <a href="Student/StudentRegistration.html">Create a demo account</a></p>
         </main>
     </div>
     <script src="JS/Common.js"></script><script src="JS/Data.js"></script><script src="JS/Demo.js"></script><script src="JS/Login.js"></script>

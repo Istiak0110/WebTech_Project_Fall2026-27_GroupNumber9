@@ -21,9 +21,10 @@ The sample uses `innerHTML` with a text-escaping helper. StudyBuddy uses `textCo
 1. `JS/Index.js` routes a known role to `Login.html?role=...`.
 2. `loadLoginPage()` reads that role with `URLSearchParams` and checks it against `demoRoles`. This small URL-reading technique extends the sample's navigation.
 3. `validateLoginForm()` calls the shared role, email, and required-password checks separately.
-4. When those checks pass, a `for` loop looks for the selected role's exact demo account. Email is trimmed and compared in lowercase; the password is compared exactly.
-5. A match sets `window.location.href` to the account's dashboard. Otherwise a message is shown and the first invalid field receives focus.
-6. The function returns `false` so the browser never sends the form to a backend.
+4. When those checks pass, a `for` loop first looks for the selected role's public demo account. Email is trimmed and compared in lowercase; the password is compared exactly.
+5. If no public account matches, `getRegisteredDemoStudent(email)` looks for a temporary registered profile. It requires the Student role and a saved `passwordHash`. A profile from the older draft receives reset/re-registration instructions.
+6. For a registered profile, `makeDemoPasswordHash(password)` prepares a comparison value from the entered password. Its `.then()` callback compares the result with the saved verifier. Only a match opens `Student/StudentDashboard.html`; a wrong password shows an error.
+7. `window.location.href` changes the page after a successful sample or registered check. The form function returns `false` immediately, including while a password check is pending, so the browser never sends credentials to a backend.
 
 These checks demonstrate a form workflow. Anyone can read the public demo credentials or open a dashboard directly; the checks do not protect information.
 
@@ -91,41 +92,75 @@ let isValid = validName && validID && validEmail && validPhone && validProgram &
 
 Calling validators inside a single `&&` expression could stop at the first failure. Separate calls ensure later fields also show their errors. This matches the sample's approach.
 
-`validateStudentID()` and `validateStudentEmail()` first call a common format checker. If the format is valid, a simple loop checks existing seed and temporary records. Email duplicate checks ignore case.
+`validateStudentID()` and `validateStudentEmail()` first call a common format checker. If the format is valid, a simple loop checks existing seed and temporary records. Email duplicate checks ignore case. Registration also reserves all four public sample email addresses.
 
 ## How registration handles data
 
-After validation, the form constructs a profile containing name, ID, email, phone, program, and semester. It intentionally leaves the password and confirmation out. `saveDemoStudent()` receives that profile and reports whether tab-session storage accepted it. The displayed message distinguishes a stored tab-session profile from a profile available only on the current page.
+After field validation, registration checks that the project is open through a static preview rather than `file://`. It constructs a profile containing name, ID, email, phone, program, and semester. It calls the browser's password helper and adds the resulting verifier as `passwordHash`. The raw password and confirmation are left out.
 
-This actual helper in `JS/Demo.js` makes a new object with only the intended fields:
+`saveDemoStudent()` builds an updated list and attempts the storage write before replacing the active in-memory list. If preparation or storage fails, the page reports the problem and creates no new login. Continue to Login appears only after success. `copyDemoProfile()` explicitly copies the six profile fields plus the optional verifier; `isDemoProfile()` accepts only a verifier with 64 lowercase hexadecimal characters when one is present. It also accepts legacy profiles without a verifier so login can explain how to reset and register again.
+
+## Native password comparison value, line by line
+
+The sample does not implement reusable registered logins. This correction introduces one browser API and asynchronous callbacks. A Promise represents a result that will arrive later. `.then()` handles the successful result and `.catch()` handles a failure. The form stays on the page while the browser prepares the result.
+
+This is the actual helper in `JS/Demo.js`:
 
 ```javascript
-function copyDemoProfile(profile)
+function makeDemoPasswordHash(password)
 {
-    return {
-        name: profile.name,
-        id: profile.id,
-        email: profile.email.toLowerCase(),
-        phone: profile.phone,
-        program: profile.program,
-        semester: profile.semester
-    };
+    if (!window.crypto || !window.crypto.subtle || typeof TextEncoder === "undefined")
+    {
+        return Promise.reject(new Error("Demo password checks need a supported browser and static preview."));
+    }
+    let encoded = new TextEncoder().encode(password);
+    return window.crypto.subtle.digest("SHA-256", encoded).then(function (buffer)
+    {
+        let bytes = new Uint8Array(buffer);
+        let hash = "";
+        for (let i = 0; i < bytes.length; i++)
+        {
+            let part = bytes[i].toString(16);
+            if (part.length === 1)
+            {
+                part = "0" + part;
+            }
+            hash = hash + part;
+        }
+        return hash;
+    });
 }
 ```
 
 | Line | Explanation |
 |---|---|
-| 1 | Accept a profile as the function's input. |
+| 1 | Declare the named helper with the entered password as its argument. |
 | 2 | Open the function. |
-| 3 | Start returning a new object. |
-| 4 | Copy its name. |
-| 5 | Copy its student ID. |
-| 6 | Copy the email in lowercase for consistent comparisons. |
-| 7 | Copy the optional phone. |
-| 8 | Copy the program. |
-| 9 | Copy the semester. There are no password fields in this list. |
-| 10 | Finish the returned object. |
-| 11 | Close the function. |
+| 3 | Check whether the browser provides Web Crypto and text encoding. `!` means “not.” |
+| 4 | Open the missing-feature branch. |
+| 5 | Return a failed Promise with a useful message; the calling form handles it in `.catch()`. |
+| 6 | Close that branch. |
+| 7 | Convert the entered text to bytes using the browser's `TextEncoder`. |
+| 8 | Ask the browser's native SHA-256 function to produce a digest. `.then()` receives its result as `buffer`. |
+| 9 | Open the successful-result callback. |
+| 10 | Read the buffer as an ordinary sequence of byte values using `Uint8Array`. |
+| 11 | Start an empty string for the comparison value. |
+| 12 | Loop through all digest bytes. |
+| 13 | Open the loop body. |
+| 14 | Convert the byte to base-16 text, called hexadecimal. |
+| 15 | Check whether that text has only one character. |
+| 16 | Open the one-character branch. |
+| 17 | Add a leading zero so every byte contributes two characters. |
+| 18 | Close the branch. |
+| 19 | Append the two-character part to the result. |
+| 20 | Close the loop. |
+| 21 | Return the 64-character verifier from the callback. |
+| 22 | Close `.then()`; the helper returns its Promise to the form. |
+| 23 | Close the helper. |
+
+The application does not implement a cryptographic algorithm itself or add a library. The verifier is a browser-local comparison value, not a claim of secure password storage or real authentication. The entered password and confirmation never enter saved profile data.
+
+Both form scripts keep an attempt number. Starting a submission remembers the current number; edits, Reset, filling a sample account, or another submission increment it. A delayed `.then()` or `.catch()` result checks that number before saving a profile, showing feedback, or redirecting. This prevents an older result from acting on a form the user has already changed.
 
 ## Browser storage is a new extension
 
@@ -136,10 +171,10 @@ The sample validates forms without keeping records. StudyBuddy adds `sessionStor
 - `try/catch` handles blocked storage, malformed JSON, and write failures without crashing the page.
 - `isDemoProfile()` checks stored data before using it. Stored input is not automatically trusted.
 - `loadDemoProfiles()` loads once per page; `getDemoStudents()` combines seed and temporary records.
-- If loading/writing fails, the profile list stays in page memory and a message explains that navigation can lose new profiles.
+- If loading or writing fails, registration reports that no new demo login was created. There is no successful page-memory-only account fallback.
 - `resetDemoData()` removes only the `studybuddy.demo.profiles` key. It does not call `sessionStorage.clear()`, which would remove unrelated records.
 
-Storage is temporary browser data. It is not permanent saving, real registration, or a shared class database. The published login accounts remain unchanged when a profile is registered.
+Storage is temporary browser data. A registered Student login works only at the same site address in the same tab session. Use a static preview such as VS Code Live Server for this flow; direct HTML files continue to support sample logins. Reset Demo Profiles removes registered logins. This is not permanent saving, real registration, or a shared class database. The four published sample accounts remain unchanged.
 
 ## Feedback, correction, and reset
 

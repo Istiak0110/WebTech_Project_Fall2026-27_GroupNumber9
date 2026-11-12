@@ -13,8 +13,8 @@ The examples are educational evidence, not additional project requirements. Thei
 | Page | Purpose | Status |
 |---|---|---|
 | `index.html` | Introduce the project and offer all four roles. | Milestone 1 |
-| `Login.html` | Validate the selected role and public demo credentials, then open its dashboard. | Milestone 1 |
-| `Student/StudentRegistration.html` | Validate profile fields and show the temporary demo result. | Milestone 1 |
+| `Login.html` | Validate the selected role and public demo credentials, or a registered temporary Student login, then open its dashboard. | Milestone 1 |
+| `Student/StudentRegistration.html` | Validate profile fields and create a temporary Student demo login when browser hashing and storage succeed. | Milestone 1 |
 | `Student/StudentDashboard.html` | Role navigation and foundation shell; academic summaries come later. | Shell in Milestone 1 |
 | `Student/AcademicProgress.html` | Display fictional completed courses, grades, credits, and remaining credits. | Planned |
 | `Student/CGPACalculator.html` | Calculate a credit-weighted result from validated rows. | Planned |
@@ -36,8 +36,8 @@ Every role page will provide Dashboard, Home, and Switch Role navigation. Planne
 
 | Form | Rules |
 |---|---|
-| Login | A known role, valid email, nonempty password, and matching public demo credentials for that role. |
-| Student registration | Trimmed name 3–60 characters with normal name punctuation; project ID format `YY-NNNNN-S`, where `S` is 1–3; valid email; optional Bangladeshi mobile number beginning 013–019 with 11 digits; known program; semester 1–12; password of at least 8 characters containing uppercase, lowercase, and a digit; exact password confirmation; no duplicate demo/profile ID or email. |
+| Login | A known role, valid email, nonempty password, and matching public demo credentials for that role, or a matching saved password verifier for a temporary Student login in the same tab/site. Registered accounts must use Student. Older profiles without a verifier receive reset/re-registration instructions. |
+| Student registration | Trimmed name 3–60 characters with normal name punctuation; project ID format `YY-NNNNN-S`, where `S` is 1–3; valid email; optional Bangladeshi mobile number beginning 013–019 with 11 digits; known program; semester 1–12; password of at least 8 characters containing uppercase, lowercase, and a digit; exact confirmation; no duplicate profile ID/email or reserved sample email; static preview origin; successful native password-verifier preparation and storage write before reporting success. |
 | CGPA calculator | At least one complete, nonduplicate course row; finite numeric credits and grade points; credits within the documented demo range; grade points 0–4; paired previous credits/CGPA if provided; no zero denominator. |
 | Semester planning | Available semester and at least one offered section; no duplicate/passed courses, inactive offerings, unmet prerequisites, excessive credits, or timetable overlaps. |
 | Student management | Valid name, ID, email, program, admission semester, and status; duplicate checks exclude the record being edited; referenced IDs remain fixed. |
@@ -69,7 +69,11 @@ Build offerings before the student recommendation/planning pages. Then add sched
 
 ## Shared data and assumptions
 
-`JS/Data.js` contains fictional records. `JS/Demo.js` keeps temporary profiles in tab-session storage with an in-memory fallback when needed. Passwords are never stored. Registration does not create a real account, and demo login remains based on the published sample accounts.
+`JS/Data.js` contains fictional records and four public sample accounts. `JS/Demo.js` keeps registered Student profiles and a password comparison value in tab-session storage. Raw passwords and confirmation values are never stored. The native Web Crypto SHA-256 API prepares the comparison value; this is an explicitly explained extension beyond the faculty sample and does not provide real authentication or access protection.
+
+New registrations succeed only after the browser prepares the verifier and saves the profile. Failed storage creates no page-only login. Registered Student logins require a static preview, the same browser tab, and the same site address. Sample logins continue to work when `index.html` is opened directly. Legacy profiles without a verifier remain readable so login can explain Reset Demo Profiles and re-registration. All four public sample email addresses are reserved.
+
+Password preparation is asynchronous. Named cancellation functions increment an attempt number after edits, reset, or another submission; an older callback cannot save a stale registration or redirect after the form changes. This remains part of the bounded Milestone 1 correction, not an expansion into backend authentication.
 
 The project ID pattern is a demonstration rule, not verification of an official AIUB rule. Before later academic modules, document the sample curriculum, credit ranges, grading assumptions, and semester credit limit centrally. An initial 18-credit limit is a project assumption until confirmed. Browser-local data is not shared across devices or teammates and can be reset.
 

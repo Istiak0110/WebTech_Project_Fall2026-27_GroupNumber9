@@ -14,7 +14,7 @@
         <nav class="header-nav" aria-label="Main navigation"><a href="../Login.html?role=student">Demo login <span aria-hidden="true">↗</span></a></nav>
     </div></header>
     <main class="container registration-main" id="main">
-        <div class="registration-header"><p class="eyebrow">Student workspace / registration</p><h1>A first step toward a clearer plan.</h1><p>Try the student registration form. Valid details create a temporary demo profile; they do not create a real login account.</p></div>
+        <div class="registration-header"><p class="eyebrow">Student workspace / registration</p><h1>A first step toward a clearer plan.</h1><p>Create a temporary student demo account, then use your email and password to open the Student workspace in this tab. This is a frontend simulation.</p></div>
         <noscript><p class="noscript-note">JavaScript is required to validate the registration form. Nothing will be submitted to a server.</p></noscript>
         <form class="registration-card" onsubmit="return validateStudentRegistrationForm()" onreset="resetRegistrationForm()" novalidate>
             <p class="hint">All fields are required except your phone number. Use fictional details for this demonstration.</p>
@@ -30,17 +30,17 @@
                 </div>
             </fieldset>
             <fieldset disabled>
-                <legend>02 / Practice password validation</legend>
-                <p class="hint">These password fields demonstrate validation only. Their values are not saved and cannot be used to log in.</p>
+                <legend>02 / Your demo password</legend>
+                <p class="hint">Use a practice password for this demonstration. The browser keeps a temporary password verifier; your entered password is not saved.</p>
                 <div class="form-grid">
-                    <div class="field"><label for="Password">Practice password</label><input id="Password" name="password" type="password" autocomplete="new-password" required aria-describedby="PasswordHint PasswordError"><p class="hint" id="PasswordHint">At least 8 characters with an uppercase letter, a lowercase letter, and a number.</p><p class="error" id="PasswordError"></p></div>
-                    <div class="field"><label for="ConfirmPassword">Confirm practice password</label><input id="ConfirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required aria-describedby="ConfirmPasswordError"><p class="error" id="ConfirmPasswordError"></p></div>
+                    <div class="field"><label for="Password">Demo password</label><input id="Password" name="password" type="password" autocomplete="new-password" required aria-describedby="PasswordHint PasswordError"><p class="hint" id="PasswordHint">At least 8 characters with an uppercase letter, a lowercase letter, and a number.</p><p class="error" id="PasswordError"></p></div>
+                    <div class="field"><label for="ConfirmPassword">Confirm demo password</label><input id="ConfirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required aria-describedby="ConfirmPasswordError"><p class="error" id="ConfirmPasswordError"></p></div>
                 </div>
                 <label class="choice"><input id="ShowPassword" type="checkbox" onclick="togglePassword('Password', this); togglePassword('ConfirmPassword', this)"> Show both passwords</label>
             </fieldset>
             <p id="ResultText" class="form-result" role="status" aria-live="polite"></p>
-            <div class="form-actions"><button class="button" type="submit">Validate demo profile <span aria-hidden="true">→</span></button><button class="button secondary" type="reset">Reset form</button></div>
-            <p class="continue-login" id="ContinueLogin" hidden><a href="../Login.html?role=student">Continue with the sample student login →</a></p>
+            <div class="form-actions"><button class="button" type="submit">Create demo account <span aria-hidden="true">→</span></button><button class="button secondary" type="reset">Reset form</button></div>
+            <p class="continue-login" id="ContinueLogin" hidden><a href="../Login.html?role=student">Continue to your student login →</a></p>
             <p class="hint" id="DemoStatus" role="status" aria-live="polite">Profiles belong only to this browser demonstration.</p>
         </form>
     </main>

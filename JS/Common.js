@@ -33,7 +33,7 @@ function showResult(isValid, message)
 {
     let result = document.getElementById("ResultText");
     result.className = "form-result failed";
-    result.textContent = "Please correct the marked fields and try again.";
+    result.textContent = message || "Please correct the marked fields and try again.";
     if (isValid)
     {
         result.className = "form-result success";

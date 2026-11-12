@@ -23,13 +23,19 @@ function isDemoProfile(profile)
     {
         return false;
     }
+    // Older draft profiles have no verifier. Keep them readable for a clear reset message.
+    if (profile.passwordHash !== undefined &&
+        (typeof profile.passwordHash !== "string" || !/^[a-f0-9]{64}$/.test(profile.passwordHash)))
+    {
+        return false;
+    }
     return demoPrograms.indexOf(profile.program) !== -1 && demoSemesters.indexOf(profile.semester) !== -1;
 }
 
-// Explicit fields prevent passwords or unrelated values from entering storage.
+// Explicit fields keep raw passwords and unrelated values out of storage.
 function copyDemoProfile(profile)
 {
-    return {
+    let copy = {
         name: profile.name,
         id: profile.id,
         email: profile.email.toLowerCase(),
@@ -37,6 +43,37 @@ function copyDemoProfile(profile)
         program: profile.program,
         semester: profile.semester
     };
+    if (profile.passwordHash !== undefined)
+    {
+        copy.passwordHash = profile.passwordHash;
+    }
+    return copy;
+}
+
+// Browser-provided hashing keeps the entered password out of saved profile data.
+// This is a classroom login simulation, not a secure authentication system.
+function makeDemoPasswordHash(password)
+{
+    if (!window.crypto || !window.crypto.subtle || typeof TextEncoder === "undefined")
+    {
+        return Promise.reject(new Error("Demo password checks need a supported browser and static preview."));
+    }
+    let encoded = new TextEncoder().encode(password);
+    return window.crypto.subtle.digest("SHA-256", encoded).then(function (buffer)
+    {
+        let bytes = new Uint8Array(buffer);
+        let hash = "";
+        for (let i = 0; i < bytes.length; i++)
+        {
+            let part = bytes[i].toString(16);
+            if (part.length === 1)
+            {
+                part = "0" + part;
+            }
+            hash = hash + part;
+        }
+        return hash;
+    });
 }
 
 function loadDemoProfiles()
@@ -92,16 +129,17 @@ function getDemoStudents()
     return demoStudents.concat(temporaryStudents);
 }
 
-// true means this tab's storage accepted the profile; false means page memory only.
+// A registered login needs a successful cross-page save. Failed writes add no profile.
 function saveDemoStudent(profile)
 {
     loadDemoProfiles();
-    temporaryStudents.push(copyDemoProfile(profile));
     if (demoStorageReady)
     {
+        let updated = temporaryStudents.concat([copyDemoProfile(profile)]);
         try
         {
-            sessionStorage.setItem(demoProfileKey, JSON.stringify(temporaryStudents));
+            sessionStorage.setItem(demoProfileKey, JSON.stringify(updated));
+            temporaryStudents = updated;
             return true;
         }
         catch (error)
@@ -112,16 +150,33 @@ function saveDemoStudent(profile)
     return false;
 }
 
+function getRegisteredDemoStudent(email)
+{
+    loadDemoProfiles();
+    for (let i = 0; i < temporaryStudents.length; i++)
+    {
+        if (temporaryStudents[i].email === email)
+        {
+            return temporaryStudents[i];
+        }
+    }
+    return null;
+}
+
 function initializeDemoStatus()
 {
     loadDemoProfiles();
     let status = document.getElementById("DemoStatus");
     if (status)
     {
-        status.textContent = "Frontend demo. Temporary profiles can stay in this tab; Reset Demo restores the sample records.";
+        status.textContent = "Registered student demo logins last for this tab at this site address. Reset demo profiles removes them. Nothing is permanently saved.";
+        if (window.location.protocol === "file:")
+        {
+            status.textContent = "Sample logins work here. To register your own demo login, open this folder with a static preview such as VS Code Live Server, then stay in the same tab. Direct HTML files do not reliably share temporary accounts.";
+        }
         if (!demoStorageReady)
         {
-            status.textContent = "Browser storage is unavailable or saved demo data could not be read. New profiles stay on this page only. Reset Demo can clear StudyBuddy's demo data.";
+            status.textContent = "Temporary browser storage is unavailable or saved demo data could not be read. New demo logins cannot be created. Reset demo profiles on the home page to clear old data, or use a static preview with storage enabled. Sample logins still work.";
         }
     }
 }
