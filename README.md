@@ -1,29 +1,50 @@
 # StudyBuddy
 
-**Student Academic Planning and Course Recommendation System**
+Student Academic Planning and Course Recommendation System
 
-StudyBuddy is a web-based academic planning system designed to help students organize their academic progress, plan semesters, calculate CGPA, and receive course recommendations.
+AIUB · Web Technologies · Fall 2026–27 · Group 9
 
-## Project Overview
+## Run
 
-The goal of StudyBuddy is to make academic planning easier by providing students with a simple, centralized platform for managing their academic information.
+Extract the project and double-click `index.html`. Enable JavaScript. No installation, server, or build is needed.
 
-## Planned Features
+Choose a role and use one of the sample accounts below. Student, Faculty Advisor, and Academic Coordinator each have their own registration link and form. Enter fictional details, then use **Go to login** on the same page and enter the password you registered. The matching role and email are filled in for you.
 
-- Student academic dashboard
-- CGPA and credit calculator
-- Semester planning
-- Course prerequisite checking
-- Course recommendations
+Administrator accounts are assigned by the institution. Selecting Administrator hides public registration. Before a role is selected, the page asks you to choose one.
 
-## Technologies
+New registrations exist only in the `Login.html` page's JavaScript memory. Refreshing or leaving that page clears them, including opening a dashboard. Nothing is permanently saved. This is a form and navigation demonstration, not real authentication.
 
-To be finalized based on the Web Technologies course requirements.
+| Role | Email | Password |
+|---|---|---|
+| Student | student@studybuddy.example | StudyBuddy1 |
+| Administrator | admin@studybuddy.example | StudyBuddy1 |
+| Faculty Advisor | advisor@studybuddy.example | StudyBuddy1 |
+| Academic Coordinator | coordinator@studybuddy.example | StudyBuddy1 |
 
-## Course
+## Current work
 
-Web Technologies — Fall 2026-27
+This draft contains Home, shared login, three separate role-specific registration forms, and four dashboard layouts. Academic progress, CGPA calculation, planning, management, advising, and scheduling are future parts of the project. They are labeled accordingly.
 
-## Group
+The code uses HTML, CSS, and vanilla JavaScript. Its shared stylesheet, shared validators, fieldsets, error paragraphs, role folders, and named page functions follow the faculty's HMS examples. StudyBuddy's code and page content are original.
 
-Group 9
+## Appearance
+
+The pages keep a simple academic layout with softer borders and consistent spacing. Student uses blue, Administrator purple, Faculty Advisor green, and Academic Coordinator amber. Login and registration use the selected role's theme.
+
+The original [StudyBuddy logo](Images/StudyBuddyLogo.png) was generated for this project. It combines two students and an open book in navy and teal, and appears in the headers and browser tabs. The image is included locally, so it works without an internet connection.
+
+## Files
+
+- `Design/Style.css`: shared appearance and small-screen layout.
+- `Images/StudyBuddyLogo.png`: original transparent project logo.
+- `JS/Common.js`: validation and error helpers.
+- `JS/Data.js`: sample accounts and temporary registration array.
+- `JS/Login.js`: show the forms and check login details.
+- `Student/JS/StudentRegistration.js`: student registration rules.
+- `Advisor/JS/AdvisorRegistration.js`: faculty ID, department, designation, and account validation.
+- `Coordinator/JS/CoordinatorRegistration.js`: coordinator ID, assigned semester/year, and account validation.
+- `Student/`, `Admin/`, `Advisor/`, `Coordinator/`: role dashboards.
+
+Login and the three registration forms share `Login.html` so temporary registration data does not need to move between files. The registration entry pages in `Student/`, `Advisor/`, and `Coordinator/` open their matching sections. The role-specific forms use project example ID formats; they do not verify institutional employment or official AIUB records.
+
+Read the [code guide](Docs/CodeGuide.md), [development plan](Docs/DevelopmentPlan.md), [team responsibilities](Docs/TeamResponsibilities.md), and [short validation notes](Docs/ValidationChecklist.md).

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/StudyBuddyLogo.png" type="image/png">
+    <title>StudyBuddy - Home</title>
+    <link rel="stylesheet" href="Design/Style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <a href="index.html" aria-label="StudyBuddy home">
+                <img class="project-logo" src="Images/StudyBuddyLogo.png" alt="StudyBuddy logo: two students and an open book" width="76" height="72">
+            </a>
+            <h1>StudyBuddy</h1>
+        </div>
+        <p>Student Academic Planning and Course Recommendation System</p>
+    </header>
+
+    <nav class="topnav" aria-label="Main navigation">
+        <a href="index.html" class="active" aria-current="page">Home</a>
+        <a href="Login.html">Login</a>
+        <a href="Login.html#register">Student Registration</a>
+    </nav>
+
+    <main class="page">
+        <h2>Welcome to StudyBuddy</h2>
+        <p>StudyBuddy is our Web Technologies group project. It will help students check academic progress, calculate CGPA and plan their courses.</p>
+        <p>Choose a user role to open its login page.</p>
+
+        <div class="role-list">
+            <section class="role-box student">
+                <h3>Student</h3>
+                <p>View academic progress, calculate CGPA and prepare a semester plan.</p>
+                <a class="button" href="Login.html?role=student">Student Login</a>
+            </section>
+
+            <section class="role-box admin">
+                <h3>Administrator</h3>
+                <p>Manage student information and the course catalog.</p>
+                <a class="button" href="Login.html?role=admin">Admin Login</a>
+            </section>
+
+            <section class="role-box advisor">
+                <h3>Faculty Advisor</h3>
+                <p>Give academic advice and review student course plans.</p>
+                <a class="button" href="Login.html?role=advisor">Advisor Login</a>
+            </section>
+
+            <section class="role-box coordinator">
+                <h3>Academic Coordinator</h3>
+                <p>Prepare course offerings and manage semester schedules.</p>
+                <a class="button" href="Login.html?role=coordinator">Coordinator Login</a>
+            </section>
+        </div>
+
+        <p class="small-note">This first part includes registration, login and the four dashboard pages. Academic tools will be added in the next parts.</p>
+    </main>
+
+    <footer class="footer">
+        <p>Web Technologies | Fall 2026–27 | Group 9</p>
+        <p>Frontend demonstration with sample data.</p>
+    </footer>
+</body>
+</html>

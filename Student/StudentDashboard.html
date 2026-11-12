@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Images/StudyBuddyLogo.png" type="image/png">
+    <title>StudyBuddy - Student Dashboard</title>
+    <link rel="stylesheet" href="../Design/Style.css">
+</head>
+<body class="student">
+    <header class="header">
+        <div class="brand">
+            <a href="../index.html" aria-label="StudyBuddy home">
+                <img class="project-logo" src="../Images/StudyBuddyLogo.png" alt="StudyBuddy logo: two students and an open book" width="76" height="72">
+            </a>
+            <h1>StudyBuddy</h1>
+        </div>
+        <p>Student Academic Planning and Course Recommendation System</p>
+    </header>
+
+    <nav class="topnav" aria-label="Student Dashboard navigation">
+        <a href="../index.html">Home</a>
+        <a href="StudentDashboard.html" class="active" aria-current="page">Dashboard</a>
+        <a href="../Login.html">Login / Switch Role</a>
+    </nav>
+
+    <main class="page">
+        <h2>Student Dashboard</h2>
+        <p>This page will show a student's academic information and course planning tools.</p>
+        <p class="small-note">These tools will be added in the next parts of the project.</p>
+
+        <p><a href="../Login.html#register">Open student registration</a></p>
+
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Tool</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#academic-progress">Academic Progress</a></td>
+                        <td>Next part</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#cgpa-calculator">CGPA Calculator</a></td>
+                        <td>Next part</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#semester-planner">Semester Planner</a></td>
+                        <td>Next part</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#course-recommendations">Course Recommendations</a></td>
+                        <td>Next part</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <section class="tool-section" id="academic-progress">
+            <h3>Academic Progress</h3>
+            <p>View completed courses, grades and earned credits.</p>
+        </section>
+
+        <section class="tool-section" id="cgpa-calculator">
+            <h3>CGPA Calculator</h3>
+            <p>Calculate CGPA using course credits and grade points.</p>
+        </section>
+
+        <section class="tool-section" id="semester-planner">
+            <h3>Semester Planner</h3>
+            <p>Select courses for a semester and check prerequisites.</p>
+        </section>
+
+        <section class="tool-section" id="course-recommendations">
+            <h3>Course Recommendations</h3>
+            <p>Find courses that match the student's completed prerequisites.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Web Technologies | Fall 2026–27 | Group 9</p>
+        <p>Frontend demonstration with sample data.</p>
+    </footer>
+</body>
+</html>
