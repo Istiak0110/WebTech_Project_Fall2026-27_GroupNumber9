@@ -7,7 +7,7 @@
     <title>StudyBuddy - Administrator Dashboard</title>
     <link rel="stylesheet" href="../Design/Style.css">
 </head>
-<body class="admin">
+<body class="admin" onload="loadAdminDashboard()">
     <header class="header">
         <div class="brand">
             <a href="../index.html" aria-label="StudyBuddy home">
@@ -26,38 +26,116 @@
 
     <main class="page">
         <h2>Administrator Dashboard</h2>
-        <p>The administrator will maintain student records and course information.</p>
-        <p class="small-note">These tools will be added in the next parts of the project.</p>
+        <p>Search sample student records and add courses to the catalog below.</p>
+        <p class="small-note">This is a frontend demonstration with fictional data. Changes stay on this page and reset when you refresh or leave it.</p>
+        <noscript><p class="message failed">Please enable JavaScript to search students and add courses.</p></noscript>
 
         <div class="table-scroll">
             <table>
                 <thead>
                     <tr>
                         <th scope="col">Tool</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Use</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><a href="#student-management">Student Management</a></td>
-                        <td>Next part</td>
+                        <td><a href="#student-management">Student Search</a></td>
+                        <td>Find a student by ID, name, email or department.</td>
                     </tr>
                     <tr>
-                        <td><a href="#course-management">Course Management</a></td>
-                        <td>Next part</td>
+                        <td><a href="#course-management">Add Course</a></td>
+                        <td>Validate a new course and update this page's catalog.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <section class="tool-section" id="student-management">
-            <h3>Student Management</h3>
-            <p>Add and update student names, IDs, programs and contact information.</p>
+            <h3>Student Search</h3>
+            <form id="StudentSearchForm" onsubmit="return searchStudents()" onreset="resetStudentSearch()" oninput="clearStudentSearchResults()" novalidate>
+                <fieldset disabled>
+                    <legend>Search Sample Students</legend>
+                    <div class="form-row">
+                        <label for="StudentQuery">Student ID, name, email or department</label>
+                        <input id="StudentQuery" type="text" placeholder="For example: Amina, CSE or 26-12345-3" required aria-describedby="StudentQueryHint StudentQueryError">
+                        <p class="small-note" id="StudentQueryHint">Enter at least 2 characters. Matching ignores letter case.</p>
+                        <p class="error" id="StudentQueryError"></p>
+                    </div>
+                </fieldset>
+                <p id="SearchResult" class="message" role="status" aria-live="polite"></p>
+                <div class="form-buttons">
+                    <button type="submit">Search</button>
+                    <button class="secondary" type="reset">Reset Search</button>
+                </div>
+            </form>
+            <div id="StudentSearchTable" class="table-scroll" hidden>
+                <table>
+                    <caption>Matching sample students</caption>
+                    <thead><tr><th scope="col">Student ID</th><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Department</th><th scope="col">Completed Courses</th></tr></thead>
+                    <tbody id="StudentSearchRows"></tbody>
+                </table>
+            </div>
         </section>
 
         <section class="tool-section" id="course-management">
-            <h3>Course Management</h3>
-            <p>Add and update course codes, titles, credits and prerequisites.</p>
+            <h3>Add Course</h3>
+            <p class="small-note">Course codes and credit limits below are project examples, not official university rules.</p>
+            <form id="AddCourseForm" onsubmit="return validateAddCourseForm()" onreset="resetAddCourseForm()" oninput="clearResult('CourseResult')" onchange="clearResult('CourseResult')" novalidate>
+                <fieldset disabled>
+                    <legend>Course Information</legend>
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <label for="CourseCode">Course Code</label>
+                            <input id="CourseCode" type="text" placeholder="CSE302" required aria-describedby="CourseCodeHint CourseCodeError">
+                            <p class="small-note" id="CourseCodeHint">2 to 4 letters followed by 3 digits. Letters are converted to uppercase.</p>
+                            <p class="error" id="CourseCodeError"></p>
+                        </div>
+                        <div class="form-row">
+                            <label for="CourseTitle">Course Title</label>
+                            <input id="CourseTitle" type="text" required aria-describedby="CourseTitleError">
+                            <p class="error" id="CourseTitleError"></p>
+                        </div>
+                        <div class="form-row">
+                            <label for="CourseCredits">Credit Hours</label>
+                            <input id="CourseCredits" type="number" min="1" max="4" step="1" required aria-describedby="CourseCreditsHint CourseCreditsError">
+                            <p class="small-note" id="CourseCreditsHint">A whole number from 1 to 4.</p>
+                            <p class="error" id="CourseCreditsError"></p>
+                        </div>
+                        <div class="form-row">
+                            <label for="CourseDepartment">Department</label>
+                            <select id="CourseDepartment" required aria-describedby="CourseDepartmentError">
+                                <option value="">Select a department</option>
+                                <option value="CSE">CSE</option>
+                                <option value="EEE">EEE</option>
+                                <option value="BBA">BBA</option>
+                                <option value="General">General</option>
+                            </select>
+                            <p class="error" id="CourseDepartmentError"></p>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label for="CoursePrerequisite">Prerequisite Course</label>
+                        <select id="CoursePrerequisite" aria-describedby="CoursePrerequisiteHint CoursePrerequisiteError">
+                            <option value="">None</option>
+                        </select>
+                        <p class="small-note" id="CoursePrerequisiteHint">Choose an existing course, or None if this course has no prerequisite.</p>
+                        <p class="error" id="CoursePrerequisiteError"></p>
+                    </div>
+                </fieldset>
+                <p id="CourseResult" class="message" role="status" aria-live="polite"></p>
+                <div class="form-buttons">
+                    <button type="submit">Add Course</button>
+                    <button class="secondary" type="reset">Reset Form</button>
+                </div>
+            </form>
+            <div class="table-scroll">
+                <table>
+                    <caption>Sample course catalog for this page</caption>
+                    <thead><tr><th scope="col">Code</th><th scope="col">Title</th><th scope="col">Credits</th><th scope="col">Department</th><th scope="col">Prerequisite</th></tr></thead>
+                    <tbody id="AdminCourseRows"></tbody>
+                </table>
+            </div>
         </section>
     </main>
 
@@ -65,5 +143,8 @@
         <p>Web Technologies | Fall 2026–27 | Group 9</p>
         <p>Frontend demonstration with sample data.</p>
     </footer>
+    <script src="../JS/Common.js"></script>
+    <script src="../JS/AcademicData.js"></script>
+    <script src="JS/AdminDashboard.js"></script>
 </body>
 </html>

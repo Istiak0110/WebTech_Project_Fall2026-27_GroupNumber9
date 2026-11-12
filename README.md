@@ -1,4 +1,4 @@
-# StudyBuddy
+# StudyBuddy — Version 3
 
 Student Academic Planning and Course Recommendation System
 
@@ -6,13 +6,7 @@ AIUB · Web Technologies · Fall 2026–27 · Group 9
 
 ## Run
 
-Extract the project and double-click `index.html`. Enable JavaScript. No installation, server, or build is needed.
-
-Choose a role and use one of the sample accounts below. Student, Faculty Advisor, and Academic Coordinator each have their own registration link and form. Enter fictional details, then use **Go to login** on the same page and enter the password you registered. The matching role and email are filled in for you.
-
-Administrator accounts are assigned by the institution. Selecting Administrator hides public registration. Before a role is selected, the page asks you to choose one.
-
-New registrations exist only in the `Login.html` page's JavaScript memory. Refreshing or leaving that page clears them, including opening a dashboard. Nothing is permanently saved. This is a form and navigation demonstration, not real authentication.
+Extract the project and double-click `index.html`. Enable JavaScript. No installation, server, internet connection, or build is needed. Choose a role and use its sample account:
 
 | Role | Email | Password |
 |---|---|---|
@@ -21,30 +15,39 @@ New registrations exist only in the `Login.html` page's JavaScript memory. Refre
 | Faculty Advisor | advisor@studybuddy.example | StudyBuddy1 |
 | Academic Coordinator | coordinator@studybuddy.example | StudyBuddy1 |
 
-## Current work
+Student, Faculty Advisor, and Academic Coordinator retain their separate registration forms on the shared login page. After registering fictional details, use **Go to login** without refreshing. Administrator has no public registration. These existing controls demonstrate navigation and validation; they provide no real authentication.
 
-This draft contains Home, shared login, three separate role-specific registration forms, and four dashboard layouts. Academic progress, CGPA calculation, planning, management, advising, and scheduling are future parts of the project. They are labeled accordingly.
+## Dashboard features
 
-The code uses HTML, CSS, and vanilla JavaScript. Its shared stylesheet, shared validators, fieldsets, error paragraphs, role folders, and named page functions follow the faculty's HMS examples. StudyBuddy's code and page content are original.
+| Module | Working tools |
+|---|---|
+| Student — Blue | Sample completed courses, add/remove GPA rows, weighted GPA, semester course selection and credit limit, prerequisite-based recommendations with reasons. |
+| Administrator — Purple | Add a course to the current page's catalog and search the fictional student list. |
+| Faculty Advisor — Green | Validate and display advising notes; update sample course-plan statuses. |
+| Academic Coordinator — Amber | Add a temporary offering; filter semester schedules by semester and department. |
 
-## Appearance
+The existing homepage, original [logo](Images/StudyBuddyLogo.png), color themes, shared login, and registration navigation are retained. The code uses only HTML, CSS, and vanilla JavaScript, following the faculty HMS sample's shared helpers, named functions, fieldsets, loops, and field-level errors.
 
-The pages keep a simple academic layout with softer borders and consistent spacing. Student uses blue, Administrator purple, Faculty Advisor green, and Academic Coordinator amber. Login and registration use the selected role's theme.
+## Temporary data
 
-The original [StudyBuddy logo](Images/StudyBuddyLogo.png) was generated for this project. It combines two students and an open book in navy and teal, and appears in the headers and browser tabs. The image is included locally, so it works without an internet connection.
+All academic records are fictional teaching data from `JS/AcademicData.js`. Each dashboard loads its own fresh arrays. Added courses, advising notes, offering rows, and review decisions last only on that page. Refreshing or navigating away resets them. An Admin course addition does **not** appear on another dashboard after navigation.
 
-## Files
+New registration details, including demonstration passwords, exist only in the login document's memory and clear when it is refreshed or left, including opening a dashboard. Use fictional details and a practice password. There is no database, browser storage, backend, external API, permanent saving, or new authentication feature.
 
-- `Design/Style.css`: shared appearance and small-screen layout.
-- `Images/StudyBuddyLogo.png`: original transparent project logo.
-- `JS/Common.js`: validation and error helpers.
-- `JS/Data.js`: sample accounts and temporary registration array.
-- `JS/Login.js`: show the forms and check login details.
-- `Student/JS/StudentRegistration.js`: student registration rules.
-- `Advisor/JS/AdvisorRegistration.js`: faculty ID, department, designation, and account validation.
-- `Coordinator/JS/CoordinatorRegistration.js`: coordinator ID, assigned semester/year, and account validation.
-- `Student/`, `Admin/`, `Advisor/`, `Coordinator/`: role dashboards.
+## Academic assumptions
 
-Login and the three registration forms share `Login.html` so temporary registration data does not need to move between files. The registration entry pages in `Student/`, `Advisor/`, and `Coordinator/` open their matching sections. The role-specific forms use project example ID formats; they do not verify institutional employment or official AIUB records.
+The calculator uses this **sample scale, not an official AIUB grading policy**:
 
-Read the [code guide](Docs/CodeGuide.md), [development plan](Docs/DevelopmentPlan.md), [team responsibilities](Docs/TeamResponsibilities.md), and [short validation notes](Docs/ValidationChecklist.md).
+| Letter | A+ | A | B+ | B | C+ | C | D+ | D | F |
+|---|---|---|---|---|---|---|---|---|---|
+| Points | 4.00 | 3.75 | 3.50 | 3.25 | 3.00 | 2.75 | 2.50 | 2.25 | 0.00 |
+
+GPA is `sum(credits × grade points) / sum(credits)`, rounded only for display. Course credits are whole numbers from 1 to 4. Retake replacement and institution-specific transcript rules are not implemented.
+
+`semesterCreditLimit` in `JS/AcademicData.js` configures the demo limit, initially 18 credits. Recommendations use each course's single predefined prerequisite and the completed boxes selected by the user. They are ordinary rules, not AI or machine learning. The planner checks offered-course selections and total credits; it does not enforce prerequisite or timetable eligibility.
+
+## Files and learning
+
+Each role keeps its dashboard HTML and matching script in its own folder. `JS/Common.js` contains shared validation; `JS/AcademicData.js` supplies fictional academic records and lookup helpers. Existing account data remains in `JS/Data.js`.
+
+Read the [Version 3 handoff](Docs/Version3Handoff.md), [code guide](Docs/CodeGuide.md), [development stages](Docs/DevelopmentPlan.md), [team responsibilities](Docs/TeamResponsibilities.md), and [validation record](Docs/ValidationChecklist.md).

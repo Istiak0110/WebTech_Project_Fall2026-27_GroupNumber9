@@ -32,7 +32,7 @@ function clearFormErrors(formId, resultId)
 {
     let form = document.getElementById(formId);
     let errors = form.querySelectorAll(".error");
-    let inputs = form.querySelectorAll("input, select");
+    let inputs = form.querySelectorAll("input, select, textarea");
     for (let i = 0; i < errors.length; i++)
     {
         errors[i].textContent = "";
@@ -196,4 +196,63 @@ function togglePassword(inputId, checkbox)
     {
         document.getElementById(inputId).type = "text";
     }
+}
+
+// Shared numeric checks for credits and seat counts.
+function validateNumber(inputId, label, min, max, whole)
+{
+    let value = document.getElementById(inputId).value.trim();
+    let number = Number(value);
+    if (value === "" || !Number.isFinite(number))
+    {
+        showError(inputId, "Enter a valid number for " + label + ".");
+        return false;
+    }
+    if (whole && !Number.isInteger(number))
+    {
+        showError(inputId, label + " must be a whole number.");
+        return false;
+    }
+    if (number < min || number > max)
+    {
+        showError(inputId, label + " must be between " + min + " and " + max + ".");
+        return false;
+    }
+    clearError(inputId);
+    return true;
+}
+
+function validateTextLength(inputId, label, min, max)
+{
+    let value = document.getElementById(inputId).value.trim();
+    if (value.length < min || value.length > max)
+    {
+        showError(inputId, label + " must contain " + min + " to " + max + " characters.");
+        return false;
+    }
+    clearError(inputId);
+    return true;
+}
+
+function getCheckedValues(groupName)
+{
+    let boxes = document.querySelectorAll('input[name="' + groupName + '"]');
+    let selected = [];
+    for (let i = 0; i < boxes.length; i++)
+    {
+        if (boxes[i].checked) { selected.push(boxes[i].value); }
+    }
+    return selected;
+}
+
+function validateCheckboxes(groupName, errorId, label, minimum)
+{
+    let selected = getCheckedValues(groupName);
+    if (selected.length < minimum)
+    {
+        document.getElementById(errorId).textContent = "Select at least " + minimum + " " + label + ".";
+        return false;
+    }
+    document.getElementById(errorId).textContent = "";
+    return true;
 }

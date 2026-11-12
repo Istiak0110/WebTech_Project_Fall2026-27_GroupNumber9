@@ -7,7 +7,7 @@
     <title>StudyBuddy - Student Dashboard</title>
     <link rel="stylesheet" href="../Design/Style.css">
 </head>
-<body class="student">
+<body class="student" onload="loadStudentDashboard()">
     <header class="header">
         <div class="brand">
             <a href="../index.html" aria-label="StudyBuddy home">
@@ -26,8 +26,8 @@
 
     <main class="page">
         <h2>Student Dashboard</h2>
-        <p>This page will show a student's academic information and course planning tools.</p>
-        <p class="small-note">These tools will be added in the next parts of the project.</p>
+        <p>Use the sample academic record, calculate a GPA, and prepare a semester plan.</p>
+        <p class="small-note">Changes and results on this page are temporary. They reset when you refresh or leave this page.</p>
 
         <p><a href="../Login.html#register">Open student registration</a></p>
 
@@ -42,42 +42,94 @@
                 <tbody>
                     <tr>
                         <td><a href="#academic-progress">Academic Progress</a></td>
-                        <td>Next part</td>
+                        <td>Available</td>
                     </tr>
                     <tr>
                         <td><a href="#cgpa-calculator">CGPA Calculator</a></td>
-                        <td>Next part</td>
+                        <td>Available</td>
                     </tr>
                     <tr>
                         <td><a href="#semester-planner">Semester Planner</a></td>
-                        <td>Next part</td>
+                        <td>Available</td>
                     </tr>
                     <tr>
                         <td><a href="#course-recommendations">Course Recommendations</a></td>
-                        <td>Next part</td>
+                        <td>Available</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
+        <noscript><p class="message failed">Enable JavaScript to use the academic tools.</p></noscript>
         <section class="tool-section" id="academic-progress">
             <h3>Academic Progress</h3>
-            <p>View completed courses, grades and earned credits.</p>
+            <p>Fictional sample student: <strong id="ProgressStudent"></strong>. This is not a record retrieved from login.</p>
+            <div class="table-scroll">
+                <table>
+                    <caption>Sample completed courses</caption>
+                    <thead><tr><th scope="col">Code</th><th scope="col">Course</th><th scope="col">Credits</th><th scope="col">Status</th></tr></thead>
+                    <tbody id="ProgressRows"></tbody>
+                </table>
+            </div>
+            <p>Completed sample credits: <strong id="ProgressCredits">0</strong></p>
         </section>
 
         <section class="tool-section" id="cgpa-calculator">
             <h3>CGPA Calculator</h3>
-            <p>Calculate CGPA using course credits and grade points.</p>
+            <p>Enter courses to calculate their credit-weighted GPA. Credit hours must be whole numbers from 1 to 4.</p>
+            <p class="small-note">Sample grading scale: <span id="GradeScale"></span>. This is a classroom scale, not an official AIUB policy. Retake replacement is not included.</p>
+            <form id="CGPAForm" onsubmit="return calculateStudentGPA()" onreset="resetCGPAForm()" oninput="clearGPAResult()" onchange="clearGPAResult()" novalidate>
+                <fieldset disabled>
+                    <legend>Courses and grades</legend>
+                    <div id="CourseRows"></div>
+                    <button class="secondary" type="button" onclick="addCourseRow()">Add course</button>
+                </fieldset>
+                <p id="CGPAResult" class="message" role="status" aria-live="polite"></p>
+                <div class="summary-box" aria-live="polite">Total credits: <strong id="GPATotalCredits">—</strong> | Calculated GPA: <strong id="GPAValue">—</strong></div>
+                <div class="form-buttons"><button type="submit">Calculate GPA</button><button class="secondary" type="reset">Reset</button></div>
+            </form>
         </section>
 
         <section class="tool-section" id="semester-planner">
             <h3>Semester Planner</h3>
-            <p>Select courses for a semester and check prerequisites.</p>
+            <p>Choose a semester and courses from its available sample offerings. The demo credit limit is <strong id="PlannerLimit">18</strong>.</p>
+            <form id="PlannerForm" onsubmit="return validateSemesterPlan()" onreset="resetPlannerForm()" novalidate>
+                <fieldset disabled>
+                    <legend>Semester and courses</legend>
+                    <div class="form-row">
+                        <label for="PlannerSemester">Semester</label>
+                        <select id="PlannerSemester" required aria-describedby="PlannerSemesterError" onchange="loadPlannerCourses()"><option value="">Select a semester</option></select>
+                        <p id="PlannerSemesterError" class="error"></p>
+                    </div>
+                    <div id="PlannerCourses" class="checkbox-list"></div>
+                    <p id="PlannerCoursesError" class="error"></p>
+                    <p aria-live="polite">Selected credits: <strong id="PlannerCreditTotal">0</strong></p>
+                </fieldset>
+                <p id="PlannerResult" class="message" role="status" aria-live="polite"></p>
+                <div id="PlannerSummary" class="summary-box" aria-live="polite"></div>
+                <div class="form-buttons"><button type="submit">Prepare plan</button><button class="secondary" type="reset">Reset</button></div>
+            </form>
         </section>
 
         <section class="tool-section" id="course-recommendations">
             <h3>Course Recommendations</h3>
-            <p>Find courses that match the student's completed prerequisites.</p>
+            <p>Select the courses you have completed. Leave every box empty if none are completed yet. Recommendations use the sample prerequisite rules only.</p>
+            <form id="RecommendationForm" onsubmit="return recommendCourses()" onreset="resetRecommendations()" onchange="clearRecommendations()" novalidate>
+                <fieldset disabled>
+                    <legend>Completed courses</legend>
+                    <div id="CompletedCourses" class="checkbox-list"></div>
+                    <p id="CompletedCoursesError" class="error"></p>
+                </fieldset>
+                <p id="RecommendationResult" class="message" role="status" aria-live="polite"></p>
+                <div class="form-buttons"><button type="submit">Show recommendations</button><button class="secondary" type="reset">Reset</button></div>
+            </form>
+            <div class="table-scroll">
+                <table>
+                    <caption>Eligibility under the sample course rules</caption>
+                    <thead><tr><th scope="col">Course</th><th scope="col">Eligibility</th><th scope="col">Reason</th></tr></thead>
+                    <tbody id="RecommendationRows"></tbody>
+                </table>
+            </div>
         </section>
     </main>
 
@@ -85,5 +137,8 @@
         <p>Web Technologies | Fall 2026–27 | Group 9</p>
         <p>Frontend demonstration with sample data.</p>
     </footer>
+    <script src="../JS/Common.js"></script>
+    <script src="../JS/AcademicData.js"></script>
+    <script src="JS/StudentDashboard.js"></script>
 </body>
 </html>

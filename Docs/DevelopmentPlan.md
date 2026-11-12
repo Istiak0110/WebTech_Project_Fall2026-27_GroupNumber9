@@ -1,63 +1,35 @@
-# Development plan
+# Version 3 development stages
 
-StudyBuddy uses HTML, CSS, and vanilla JavaScript. The faculty's HMS examples guide the role folders, shared CSS, shared validation, and separate page scripts. Their exact page counts are sample details, not extra requirements. The Figma prototype was inaccessible, so this draft uses a simple layout based on the sample.
+Version 3 extends the latest Version 2 code. It keeps the existing pages, logo, role colors, shared login, three registration forms, and navigation. The tools live in sections of the four existing dashboard pages; separate pages for every tool are not required.
 
-## Pages
-
-The complete plan has 19 page destinations. The three separate registration forms share `Login.html` with login; their role-specific entry URLs redirect to the matching sections. This keeps temporary accounts in one page's memory without browser storage.
-
-| Page destination | Work |
+| Stage | Implementation |
 |---|---|
-| index.html | Home and four role links; current draft. |
-| Login.html | Login and registration sections; current draft. |
-| Student/StudentRegistration.html | Opens the shared registration section; current draft. |
-| Student/StudentDashboard.html | Dashboard layout; current draft. |
-| Student/AcademicProgress.html | Completed courses, grades, and credits; later. |
-| Student/CGPACalculator.html | Credit-weighted calculation; later. |
-| Student/SemesterPlanner.html | Course selection and eligibility checks; later. |
-| Student/CourseRecommendations.html | Eligible courses with reasons; later. |
-| Admin/AdminDashboard.html | Dashboard layout; current draft. |
-| Admin/StudentManagement.html | Add/edit sample student records; later. |
-| Admin/CourseManagement.html | Course catalog and prerequisites; later. |
-| Advisor/AdvisorDashboard.html | Dashboard layout; current draft. |
-| Advisor/AdvisorRegistration.html | Opens Faculty Advisor Registration; current draft. |
-| Advisor/AcademicAdvising.html | Advising form; later. |
-| Advisor/CoursePlanReview.html | Review a course plan; later. |
-| Coordinator/CoordinatorDashboard.html | Dashboard layout; current draft. |
-| Coordinator/CoordinatorRegistration.html | Opens Academic Coordinator Registration; current draft. |
-| Coordinator/CourseOffering.html | Semester offerings; later. |
-| Coordinator/SemesterSchedule.html | Class times and rooms; later. |
+| Shared foundation | `AcademicData.js` supplies fictional academic arrays and lookup functions. `Common.js` adds number, text-length, and checkbox checks. Existing registration helpers remain. |
+| Student | Dynamic course rows, weighted GPA, semester offerings and credit totals, configurable limit, recommendation reasons, and sample completed courses. |
+| Administrator | Validated catalog addition, current-page catalog table, and case-insensitive student search with no-match feedback. |
+| Faculty Advisor | Student/semester/course choices, advising comments and status, temporary note table, and editable sample plan statuses. |
+| Academic Coordinator | Validated offering details, duplicate/faculty-slot checks, and schedule filtering by semester and department. |
+| Handoff | Code explanations, proposed team ownership, executed checks, limitations, and review pull request. |
 
-Future filenames above describe work to build; they are not working page links.
+## Faculty-sample concepts
 
-## Forms and rules
+Forms call named JavaScript functions and use fieldsets with individual error paragraphs. Each check returns a Boolean. All checks run before their results are combined, so errors appear together. Dropdowns and checkbox lists are filled using ordinary arrays, loops, and `createElement()`, similar to the sample's dependent doctor selection. The coordinator's schedule choices and field comparisons follow the sample's cross-field validation approach.
 
-| Form | Validation |
+No framework, backend, external API, browser storage, or real authentication is added. Each dashboard gets a fresh copy of the teaching arrays; page changes are not shared or permanently saved.
+
+## Version 3 form coverage
+
+| Form or control | Main rules |
 |---|---|
-| Login | Known role, valid email, nonempty password, matching sample or temporary account for that role. |
-| Student registration | Name, project-format ID, email, optional BD phone, known program/semester, strong demo password and matching confirmation; no duplicate ID/email. |
-| Faculty Advisor registration | Name, FAC-#### ID, unique email, optional BD phone, known department/designation, password and confirmation. |
-| Academic Coordinator registration | Name, COR-#### ID, unique email, optional BD phone, known department/term, consecutive academic year YYYY-YY starting from 2020 to 2100, password and confirmation. |
-| CGPA calculator | Complete unique course rows, valid credits and grade points, nonzero credit total; later. |
-| Semester planning | Offered sections, completed prerequisites, no duplicates, credit limit and timetable checks; later. |
-| Student management | Required details, valid fields, duplicate checks excluding the edited record; later. |
-| Course management | Unique code, title, credits, valid prerequisites without cycles; later. |
-| Academic advising | Existing student, topic, meaningful note, valid follow-up if selected; later. |
-| Course-plan review | Existing plan, decision, repeat eligibility checks, explanation for revision; later. |
-| Course offering | Active course, term, section, integer capacity, no duplicate offering; later. |
-| Semester schedule | Offering, day, room, faculty, start before end, no room/faculty overlap; later. |
+| Existing login and three registrations | Existing required fields, role-based prompts, project ID patterns, duplicate checks, password confirmation, and matching demo navigation. |
+| CGPA calculator | At least one complete row; unique normalized course names; integer credits 1–4; a listed grade; no zero denominator. |
+| Semester planner | Known semester; at least one unique offered course; total within `semesterCreditLimit`. |
+| Course recommendations | Completed values must be unique known course codes; zero completed courses is valid. |
+| Add course | Unique formatted code, title 3–80 characters, integer credits 1–4, known department, existing prerequisite or None, no self-prerequisite. |
+| Student search | Trimmed query 2–80 characters; case-insensitive matches; explicit no-match message. |
+| Academic advising | Known student/semester/status; at least one offered course within the credit limit; comments 10–500 characters, at least 30 for Needs Revision. |
+| Course-plan review | Existing plan and one of Approved, Needs Revision, or Pending; update the page's array and visible status. |
+| Course offering | Known course/semester/faculty/schedule; section format; integer seats 1–60; no duplicate course–semester–section or faculty using the same semester/time slot. |
+| Schedule filters | Known semester/department or All; combine both filters and handle an empty result. |
 
-The plan now includes 12 forms. Administrator has no public registration form: institutional account assignment is explained on login. Email uniqueness is checked across the three registration roles and all sample accounts.
-
-Academic ID formats, academic-year limits, credit limits, and curriculum data are project assumptions until an applicable AIUB policy is supplied. CGPA will use total credit-weighted grade points divided by total attempted credits; institution-specific retake rules need confirmation.
-
-## Order
-
-1. Finish this simple foundation: shared design, navigation, login, registration, and dashboard layouts.
-2. Administrator: student records and course catalog.
-3. Coordinator: offerings and schedules.
-4. Student: progress and CGPA, then recommendations and planning.
-5. Advisor: notes, plan review, and feedback.
-6. Combine the modules, review validation, and rehearse explanations.
-
-Before each module, explain the relevant HMS concepts. Keep changes small and record actual results. Later modules must decide their temporary-data handling explicitly; this draft promises no cross-page saving or real authentication.
+The sample grade scale, credit limits, ID patterns, curriculum, and schedules are project rules, not official AIUB policy. The [handoff](Version3Handoff.md) identifies what is complete, what was checked, and what remains outside this version.
