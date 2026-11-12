@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StudyBuddy — a student academic planning frontend demonstration for AIUB Web Technologies, Group 9.">
+    <title>StudyBuddy — Plan your next semester</title>
+    <link rel="icon" href="Images/StudyBuddyLogo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="Design/Style.css">
+</head>
+<body onload="loadHomePage()">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="index.html" aria-label="StudyBuddy home">
+                <img src="Images/StudyBuddyLogo.svg" alt="" width="42" height="42">
+                <span><strong>StudyBuddy</strong><small>A little clarity. A better semester.</small></span>
+            </a>
+            <nav class="header-nav" aria-label="Main navigation">
+                <a class="desktop-link" href="#overview">Overview</a>
+                <a class="desktop-link" href="#roles">Explore roles</a>
+                <a class="button small" href="Login.html">Demo login <span aria-hidden="true">↗</span></a>
+            </nav>
+        </div>
+    </header>
+    <main id="main" class="container">
+        <noscript><p class="noscript-note">Please enable JavaScript to use demo navigation and form validation. You can also open <a href="Login.html">the login page</a>.</p></noscript>
+        <section class="hero" id="overview" aria-labelledby="HeroTitle">
+            <div class="hero-copy">
+                <p class="eyebrow">Your next semester, in focus</p>
+                <h1 id="HeroTitle">A clearer plan.<br>A <span>stronger semester.</span></h1>
+                <p>Make room for what comes next. StudyBuddy brings academic progress, course planning, and advising into one student workspace.</p>
+                <div class="hero-actions">
+                    <a class="button" href="Login.html">Explore the demo <span aria-hidden="true">→</span></a>
+                    <a class="button secondary" href="Student/StudentRegistration.html">Try student registration</a>
+                </div>
+                <p class="hero-meta">AIUB · Web Technologies · Fall 2026–27 · Group 9</p>
+            </div>
+            <aside class="workspace-preview" aria-label="How to explore this milestone">
+                <div class="preview-heading"><strong>STUDYBUDDY / WORKSPACE</strong><span class="pill ready">Foundation preview</span></div>
+                <h2>Your next step starts here.</h2>
+                <p>A simple space for students and the people who support them.</p>
+                <ol class="step-list">
+                    <li><span class="step-number" aria-hidden="true">01</span><span><strong>Choose your role</strong><small>Four perspectives. One academic journey.</small></span></li>
+                    <li><span class="step-number" aria-hidden="true">02</span><span><strong>Try a sample account</strong><small>Demo credentials are provided on the login page.</small></span></li>
+                    <li><span class="step-number" aria-hidden="true">03</span><span><strong>Explore your workspace</strong><small>See your dashboard and the features planned for it.</small></span></li>
+                </ol>
+                <div class="preview-footer"><span class="pill">4 role dashboards</span><span class="pill">2 validated forms</span></div>
+            </aside>
+        </section>
+        <div class="foundation-note">
+            <strong>Milestone 1 is ready</strong>
+            <p>Explore demo login, student registration, and the four dashboard layouts. Academic tools and management forms are planned for the next milestones.</p>
+        </div>
+        <section class="role-section" id="roles" aria-labelledby="RolesTitle">
+            <div class="section-top">
+                <div><p class="eyebrow">Built around your role</p><h2 id="RolesTitle">One journey. Four perspectives.</h2><p>Choose a workspace to explore its foundation.</p></div>
+                <span class="section-index">01 — 04 / WORKSPACES</span>
+            </div>
+            <div class="role-grid">
+                <article class="role-card student">
+                    <span class="role-icon" aria-hidden="true">S</span><h3>Student</h3>
+                    <p>Your future home for academic progress, CGPA calculation, and semester planning.</p>
+                    <button type="button" onclick="goToLogin('student')">Explore student demo <span aria-hidden="true">→</span></button>
+                </article>
+                <article class="role-card admin">
+                    <span class="role-icon" aria-hidden="true">A</span><h3>Administrator</h3>
+                    <p>A workspace for organizing student records and the course catalog.</p>
+                    <button type="button" onclick="goToLogin('admin')">Explore admin demo <span aria-hidden="true">→</span></button>
+                </article>
+                <article class="role-card advisor">
+                    <span class="role-icon" aria-hidden="true">F</span><h3>Faculty Advisor</h3>
+                    <p>A place to guide students, review their course plans, and share feedback.</p>
+                    <button type="button" onclick="goToLogin('advisor')">Explore advisor demo <span aria-hidden="true">→</span></button>
+                </article>
+                <article class="role-card coordinator">
+                    <span class="role-icon" aria-hidden="true">C</span><h3>Academic Coordinator</h3>
+                    <p>A workspace for semester offerings and coordinated course schedules.</p>
+                    <button type="button" onclick="goToLogin('coordinator')">Explore coordinator demo <span aria-hidden="true">→</span></button>
+                </article>
+            </div>
+        </section>
+        <div class="demo-tools">
+            <button class="link-button" type="button" onclick="resetDemoData()">Reset demo profiles</button>
+            <p id="DemoStatus" role="status" aria-live="polite">Profiles are temporary and belong to this browser demonstration.</p>
+        </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-inner"><p>StudyBuddy · Group 9 · American International University-Bangladesh</p><p>Frontend demonstration · Fictional sample records</p></div></footer>
+    <script src="JS/Common.js"></script>
+    <script src="JS/Data.js"></script>
+    <script src="JS/Demo.js"></script>
+    <script src="JS/Index.js"></script>
+</body>
+</html>

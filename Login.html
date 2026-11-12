@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo login — StudyBuddy</title>
+    <link rel="icon" href="Images/StudyBuddyLogo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="Design/Style.css">
+</head>
+<body onload="loadLoginPage()">
+    <a class="skip-link" href="#main">Skip to login form</a>
+    <header class="site-header"><div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="StudyBuddy home"><img src="Images/StudyBuddyLogo.svg" alt="" width="42" height="42"><span><strong>StudyBuddy</strong><small>A little clarity. A better semester.</small></span></a>
+        <nav class="header-nav" aria-label="Main navigation"><a href="index.html">Back to home <span aria-hidden="true">↗</span></a></nav>
+    </div></header>
+    <div class="auth-layout">
+        <aside class="auth-story">
+            <p class="eyebrow">Every semester is a fresh start</p>
+            <h2>Big goals.<br>Clear next steps.</h2>
+            <p>Find your place in StudyBuddy. Explore the workspace designed for your part in the academic journey.</p>
+            <ul class="story-list"><li><span aria-hidden="true">01</span>Student</li><li><span aria-hidden="true">02</span>Administrator</li><li><span aria-hidden="true">03</span>Faculty Advisor</li><li><span aria-hidden="true">04</span>Academic Coordinator</li></ul>
+            <div class="story-note">This is a frontend course project. Sample accounts open demonstration dashboards; they do not provide real authentication.</div>
+        </aside>
+        <main class="auth-panel" id="main">
+            <p class="eyebrow">Welcome to your workspace</p>
+            <h1>Let's get you started.</h1>
+            <p>Choose a role and use its sample account to explore.</p>
+            <noscript><p class="noscript-note">JavaScript is needed to validate this form and open a dashboard.</p></noscript>
+            <!-- As in the HMS sample, JavaScript checks every field before submission. -->
+            <form onsubmit="return validateLoginForm()" onreset="resetLoginForm()" novalidate>
+                <fieldset disabled>
+                    <legend>Demo account details · all fields required</legend>
+                    <div class="field">
+                        <label for="Role">Your role</label>
+                        <select id="Role" name="role" required aria-describedby="RoleError" onchange="clearAllErrors()">
+                            <option value="">Select your role</option><option value="student">Student</option><option value="admin">Administrator</option><option value="advisor">Faculty Advisor</option><option value="coordinator">Academic Coordinator</option>
+                        </select>
+                        <p class="error" id="RoleError"></p>
+                    </div>
+                    <div class="field"><label for="Email">Email address</label><input id="Email" name="email" type="email" autocomplete="username" placeholder="student@studybuddy.example" required aria-describedby="EmailError"><p class="error" id="EmailError"></p></div>
+                    <div class="field">
+                        <label for="Password">Password</label><input id="Password" name="password" type="password" autocomplete="current-password" required aria-describedby="PasswordError">
+                        <p class="error" id="PasswordError"></p>
+                        <label class="choice"><input type="checkbox" id="ShowPassword" onclick="togglePassword('Password', this)"> Show password</label>
+                    </div>
+                </fieldset>
+                <p id="ResultText" class="form-result" role="status" aria-live="polite"></p>
+                <div class="form-actions"><button class="button" type="submit">Open workspace <span aria-hidden="true">→</span></button><button class="button secondary" type="reset">Reset</button></div>
+                <details class="demo-accounts" open>
+                    <summary>Sample accounts for this demo</summary>
+                    <p>All accounts use password <strong>StudyBuddy1</strong>. These are public demo details.</p>
+                    <div class="table-scroll"><table><caption class="hint">Select the matching role before signing in.</caption><thead><tr><th scope="col">Role</th><th scope="col">Email address</th></tr></thead><tbody>
+                        <tr><td>Student</td><td>student@studybuddy.example</td></tr><tr><td>Administrator</td><td>admin@studybuddy.example</td></tr><tr><td>Faculty Advisor</td><td>advisor@studybuddy.example</td></tr><tr><td>Academic Coordinator</td><td>coordinator@studybuddy.example</td></tr>
+                    </tbody></table></div>
+                    <div class="form-actions"><button class="button secondary small" type="button" onclick="fillDemoAccount()">Fill selected role's account</button></div>
+                </details>
+            </form>
+            <p class="form-bottom">Trying the student form? <a href="Student/StudentRegistration.html">Open registration</a></p>
+        </main>
+    </div>
+    <script src="JS/Common.js"></script><script src="JS/Data.js"></script><script src="JS/Demo.js"></script><script src="JS/Login.js"></script>
+</body>
+</html>

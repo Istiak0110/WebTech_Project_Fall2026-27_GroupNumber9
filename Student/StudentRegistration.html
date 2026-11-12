@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student registration — StudyBuddy</title>
+    <link rel="icon" href="../Images/StudyBuddyLogo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../Design/Style.css">
+</head>
+<body onload="loadRegistrationPage()">
+    <a class="skip-link" href="#main">Skip to registration form</a>
+    <header class="site-header"><div class="container header-inner">
+        <a class="brand" href="../index.html" aria-label="StudyBuddy home"><img src="../Images/StudyBuddyLogo.svg" alt="" width="42" height="42"><span><strong>StudyBuddy</strong><small>A little clarity. A better semester.</small></span></a>
+        <nav class="header-nav" aria-label="Main navigation"><a href="../Login.html?role=student">Demo login <span aria-hidden="true">↗</span></a></nav>
+    </div></header>
+    <main class="container registration-main" id="main">
+        <div class="registration-header"><p class="eyebrow">Student workspace / registration</p><h1>A first step toward a clearer plan.</h1><p>Try the student registration form. Valid details create a temporary demo profile; they do not create a real login account.</p></div>
+        <noscript><p class="noscript-note">JavaScript is required to validate the registration form. Nothing will be submitted to a server.</p></noscript>
+        <form class="registration-card" onsubmit="return validateStudentRegistrationForm()" onreset="resetRegistrationForm()" novalidate>
+            <p class="hint">All fields are required except your phone number. Use fictional details for this demonstration.</p>
+            <fieldset disabled>
+                <legend>01 / Student information</legend>
+                <div class="form-grid">
+                    <div class="field"><label for="FullName">Full name</label><input id="FullName" name="fullName" type="text" autocomplete="name" required aria-describedby="FullNameHint FullNameError"><p class="hint" id="FullNameHint">3–60 English letters, spaces, dots, apostrophes, or hyphens.</p><p class="error" id="FullNameError"></p></div>
+                    <div class="field"><label for="StudentID">Student ID</label><input id="StudentID" name="studentId" type="text" placeholder="26-12346-3" required aria-describedby="StudentIDHint StudentIDError"><p class="hint" id="StudentIDHint">Demo format: YY-NNNNN-S, with S from 1 to 3. This is a project assumption.</p><p class="error" id="StudentIDError"></p></div>
+                    <div class="field"><label for="Email">Email address</label><input id="Email" name="email" type="email" autocomplete="email" placeholder="learner@example.com" required aria-describedby="EmailError"><p class="error" id="EmailError"></p></div>
+                    <div class="field"><label for="Phone">Phone number <span class="muted">(optional)</span></label><input id="Phone" name="phone" type="tel" autocomplete="tel-national" placeholder="01712345678" aria-describedby="PhoneHint PhoneError"><p class="hint" id="PhoneHint">11 digits, starting with 013–019.</p><p class="error" id="PhoneError"></p></div>
+                    <div class="field"><label for="Program">Program</label><select id="Program" name="program" required aria-describedby="ProgramError"><option value="">Select a program</option><option value="CSE">Computer Science and Engineering</option><option value="EEE">Electrical and Electronic Engineering</option><option value="BBA">Business Administration</option></select><p class="error" id="ProgramError"></p></div>
+                    <div class="field"><label for="Semester">Current semester number</label><select id="Semester" name="semester" required aria-describedby="SemesterHint SemesterError"><option value="">Select a semester</option><option value="1">Semester 1</option><option value="2">Semester 2</option><option value="3">Semester 3</option><option value="4">Semester 4</option><option value="5">Semester 5</option><option value="6">Semester 6</option><option value="7">Semester 7</option><option value="8">Semester 8</option><option value="9">Semester 9</option><option value="10">Semester 10</option><option value="11">Semester 11</option><option value="12">Semester 12</option></select><p class="hint" id="SemesterHint">The demo offers semester numbers 1–12.</p><p class="error" id="SemesterError"></p></div>
+                </div>
+            </fieldset>
+            <fieldset disabled>
+                <legend>02 / Practice password validation</legend>
+                <p class="hint">These password fields demonstrate validation only. Their values are not saved and cannot be used to log in.</p>
+                <div class="form-grid">
+                    <div class="field"><label for="Password">Practice password</label><input id="Password" name="password" type="password" autocomplete="new-password" required aria-describedby="PasswordHint PasswordError"><p class="hint" id="PasswordHint">At least 8 characters with an uppercase letter, a lowercase letter, and a number.</p><p class="error" id="PasswordError"></p></div>
+                    <div class="field"><label for="ConfirmPassword">Confirm practice password</label><input id="ConfirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required aria-describedby="ConfirmPasswordError"><p class="error" id="ConfirmPasswordError"></p></div>
+                </div>
+                <label class="choice"><input id="ShowPassword" type="checkbox" onclick="togglePassword('Password', this); togglePassword('ConfirmPassword', this)"> Show both passwords</label>
+            </fieldset>
+            <p id="ResultText" class="form-result" role="status" aria-live="polite"></p>
+            <div class="form-actions"><button class="button" type="submit">Validate demo profile <span aria-hidden="true">→</span></button><button class="button secondary" type="reset">Reset form</button></div>
+            <p class="continue-login" id="ContinueLogin" hidden><a href="../Login.html?role=student">Continue with the sample student login →</a></p>
+            <p class="hint" id="DemoStatus" role="status" aria-live="polite">Profiles belong only to this browser demonstration.</p>
+        </form>
+    </main>
+    <footer class="site-footer"><div class="container footer-inner"><p>StudyBuddy · Group 9 · AIUB</p><p>Milestone 1 · Frontend demonstration</p></div></footer>
+    <script src="../JS/Common.js"></script><script src="../JS/Data.js"></script><script src="../JS/Demo.js"></script><script src="JS/StudentRegistration.js"></script>
+</body>
+</html>

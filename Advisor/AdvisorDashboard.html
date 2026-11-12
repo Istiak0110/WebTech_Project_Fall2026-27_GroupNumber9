@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Advisor dashboard — StudyBuddy</title>
+    <link rel="icon" href="../Images/StudyBuddyLogo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../Design/Style.css">
+</head>
+<body onload="loadAdvisorDashboard()">
+    <a class="skip-link" href="#main">Skip to dashboard</a>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <a class="brand" href="../index.html" aria-label="StudyBuddy home">
+                <img src="../Images/StudyBuddyLogo.svg" alt="" width="36" height="36">
+                <span><strong>StudyBuddy</strong><small>A better semester, together.</small></span>
+            </a>
+            <p class="sidebar-label">Faculty Advisor workspace</p>
+            <nav class="sidebar-nav" aria-label="Faculty Advisor navigation">
+                <a class="active" href="AdvisorDashboard.html" aria-current="page">Dashboard</a>
+                    <a href="#academic-advising">Academic advising</a>
+                    <a href="#course-plan-review">Course-plan review</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="../index.html">Back to home</a>
+                <p>AIUB · Group 9<br>Web Technologies<br>Fall 2026–27</p>
+            </div>
+        </aside>
+        <div class="dashboard-main">
+            <header class="dashboard-topbar">
+                <span class="breadcrumb">Workspace / <strong>Faculty Advisor</strong></span>
+                <a class="button secondary small" href="../Login.html">Switch role <span aria-hidden="true">↗</span></a>
+            </header>
+            <main id="main" class="dashboard-content">
+                <div class="dashboard-title">
+                    <div><p class="eyebrow">Faculty Advisor dashboard</p><h1>Help students see their next step.</h1><p>A space for thoughtful academic guidance and course-plan review.</p></div>
+                    <span class="pill ready">Foundation preview</span>
+                </div>
+                <noscript><p class="noscript-note">JavaScript is needed for temporary demo-profile storage and reset. Dashboard navigation still works.</p></noscript>
+                <section class="welcome-panel" aria-labelledby="WelcomeTitle">
+                    <div><h2 id="WelcomeTitle">Turn course choices into informed decisions.</h2><p>Your dashboard layout and role navigation are ready. Advising records and course-plan decisions will follow the student planning tools.</p></div>
+                    <a class="button secondary small" href="../Login.html?role=advisor">View this role's sample login <span aria-hidden="true">→</span></a>
+                </section>
+                <section aria-labelledby="FeaturesTitle">
+                    <h2 id="FeaturesTitle" class="feature-heading">Your workspace roadmap</h2>
+                    <div class="feature-grid">
+                        <article class="feature-card" id="academic-advising">
+                            <div class="card-top"><span class="card-number">01 / FACULTY ADVISOR</span><span class="pill planned">Planned</span></div>
+                            <h3>Academic advising</h3>
+                            <p>Write an advising note, choose an advising topic, and arrange a follow-up when needed.</p>
+                            <p class="milestone">Scheduled for milestone 6. This feature is not implemented yet.</p>
+                        </article>
+                        <article class="feature-card" id="course-plan-review">
+                            <div class="card-top"><span class="card-number">02 / FACULTY ADVISOR</span><span class="pill planned">Planned</span></div>
+                            <h3>Course-plan review</h3>
+                            <p>Inspect a submitted semester plan, check its eligibility, and provide an approval or revision decision.</p>
+                            <p class="milestone">Scheduled for milestone 6. This feature is not implemented yet.</p>
+                        </article>
+                    </div>
+                </section>
+                <div class="dashboard-note">
+                    <p>This dashboard is a frontend demonstration. Academic records, statistics, and actions will be added in the milestones shown above.</p>
+                    <button class="link-button" type="button" onclick="resetDemoData()">Reset demo profiles</button>
+                    <p id="DemoStatus" role="status" aria-live="polite">Profiles are temporary and belong to this browser demonstration.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../JS/Common.js"></script>
+    <script src="../JS/Data.js"></script>
+    <script src="../JS/Demo.js"></script>
+    <script src="JS/AdvisorDashboard.js"></script>
+</body>
+</html>
