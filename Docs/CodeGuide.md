@@ -42,6 +42,7 @@ function showRegistration()
 {
     document.getElementById("login").hidden = true;
     document.getElementById("register").hidden = false;
+    document.body.className = "student";
     document.getElementById("StudentName").focus();
 }
 ```
@@ -51,8 +52,17 @@ function showRegistration()
 | 1–2 | Define the function and open its body. |
 | 3 | Hide the login section. |
 | 4 | Show the registration section in the same document. |
-| 5 | Move keyboard focus to the name field. |
-| 6 | Close the function. |
+| 5 | Apply the Student color theme to the registration form. |
+| 6 | Move keyboard focus to the name field. |
+| 7 | Close the function. |
+
+## Role colors and logo
+
+Like the HMS sample, `Style.css` uses a `--theme` color. Each role class also sets `--theme-dark` for hover states and `--theme-light` for table headings. For example, `<body class="advisor">` applies the green Advisor theme. Buttons and links use `var(--theme)` so their colors stay consistent.
+
+`updateRoleTheme()` reads the selected role, checks it against the `roles` array, and sets `document.body.className`. It runs when the login page opens or its role changes. Registration selects the Student theme. Reset restores the neutral color because the role select returns to its empty first option.
+
+The header's ordinary `<img>` element loads `Images/StudyBuddyLogo.png`. Root pages use that path; role pages use `../Images/StudyBuddyLogo.png` to go up one folder first. The image has a transparent background and needs no library or extra code.
 
 ## Temporary registration and login
 

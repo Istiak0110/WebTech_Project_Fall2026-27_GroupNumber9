@@ -25,9 +25,16 @@ This draft contains Home, login, student registration, and four separate dashboa
 
 The code uses HTML, CSS, and vanilla JavaScript. Its shared stylesheet, shared validators, fieldsets, error paragraphs, role folders, and named page functions follow the faculty's HMS examples. StudyBuddy's code and page content are original.
 
+## Appearance
+
+The pages keep a simple academic layout with softer borders and consistent spacing. Student uses blue, Administrator purple, Faculty Advisor green, and Academic Coordinator amber. The login form changes color when its role is selected; student registration uses the Student theme.
+
+The original [StudyBuddy logo](Images/StudyBuddyLogo.png) was generated for this project. It combines two students and an open book in navy and teal, and appears in the headers and browser tabs. The image is included locally, so it works without an internet connection.
+
 ## Files
 
 - `Design/Style.css`: shared appearance and small-screen layout.
+- `Images/StudyBuddyLogo.png`: original transparent project logo.
 - `JS/Common.js`: validation and error helpers.
 - `JS/Data.js`: sample accounts and temporary registration array.
 - `JS/Login.js`: show the forms and check login details.

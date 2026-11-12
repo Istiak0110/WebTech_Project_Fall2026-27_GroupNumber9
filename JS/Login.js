@@ -14,9 +14,23 @@ function loadLoginPage()
             document.getElementById("LoginRole").value = role;
         }
     }
+    updateRoleTheme();
     if (window.location.hash === "#register")
     {
         showRegistration();
+    }
+}
+
+function updateRoleTheme()
+{
+    let role = document.getElementById("LoginRole").value;
+    document.body.className = "";
+    for (let i = 0; i < roles.length; i++)
+    {
+        if (role === roles[i])
+        {
+            document.body.className = role;
+        }
     }
 }
 
@@ -24,6 +38,7 @@ function showRegistration()
 {
     document.getElementById("login").hidden = true;
     document.getElementById("register").hidden = false;
+    document.body.className = "student";
     document.getElementById("StudentName").focus();
 }
 
@@ -40,6 +55,7 @@ function showLogin()
     }
     document.getElementById("LoginPassword").value = "";
     document.getElementById("ShowLoginPassword").checked = false;
+    updateRoleTheme();
     document.getElementById("LoginRole").focus();
 }
 
@@ -90,4 +106,6 @@ function resetLoginForm()
 {
     clearFormErrors("LoginForm", "LoginResult");
     document.getElementById("LoginPassword").type = "password";
+    // Native form reset returns the role select to its empty first option.
+    document.body.className = "";
 }
