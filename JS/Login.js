@@ -6,29 +6,13 @@ function loadLoginPage()
     {
         groups[i].disabled = false;
     }
-    let role = window.location.search.replace("?role=", "");
-    for (let i = 0; i < roles.length; i++)
+    let role = new URLSearchParams(window.location.search).get("role");
+    if (roles.includes(role))
     {
-        if (role === roles[i])
-        {
-            document.getElementById("LoginRole").value = role;
-        }
+        document.getElementById("LoginRole").value = role;
     }
     updateRoleTheme();
-    let hash = window.location.hash;
-    if (document.getElementById("LoginRole").value === "admin" && hash.indexOf("#register") === 0)
-    {
-        showRegistration("admin");
-    }
-    else if (hash === "#register-advisor")
-    {
-        showRegistration("advisor");
-    }
-    else if (hash === "#register-coordinator")
-    {
-        showRegistration("coordinator");
-    }
-    else if (hash === "#register")
+    if (window.location.hash === "#register")
     {
         showRegistration();
     }
@@ -37,116 +21,21 @@ function loadLoginPage()
 function updateRoleTheme()
 {
     let role = document.getElementById("LoginRole").value;
-    document.body.className = "";
-    for (let i = 0; i < roles.length; i++)
-    {
-        if (role === roles[i])
-        {
-            document.body.className = role;
-        }
-    }
-    updateRegistrationLink(role);
+    document.body.className = roles.includes(role) ? role : "";
 }
 
-function updateRegistrationLink(role)
+function showRegistration()
 {
-    let prompt = document.getElementById("RegistrationPrompt");
-    let link = document.getElementById("RegistrationLink");
-    let navLink = document.getElementById("RegistrationNavLink");
-    let name = "";
-    let title = "";
-    let target = "";
-    prompt.hidden = true;
-    navLink.hidden = true;
-    document.getElementById("AdminRegistrationMessage").hidden = true;
-    document.getElementById("SelectRoleMessage").hidden = true;
-    if (role === "student")
-    {
-        name = "student";
-        title = "Student Registration";
-        target = "#register";
-    }
-    else if (role === "advisor")
-    {
-        name = "faculty advisor";
-        title = "Faculty Advisor Registration";
-        target = "#register-advisor";
-    }
-    else if (role === "coordinator")
-    {
-        name = "academic coordinator";
-        title = "Academic Coordinator Registration";
-        target = "#register-coordinator";
-    }
-    else if (role === "admin")
-    {
-        document.getElementById("AdminRegistrationMessage").hidden = false;
-        return;
-    }
-    else
-    {
-        document.getElementById("SelectRoleMessage").hidden = false;
-        return;
-    }
-    document.getElementById("RegistrationPromptText").textContent = "New " + name + "?";
-    link.setAttribute("href", target);
-    navLink.setAttribute("href", target);
-    navLink.textContent = title;
-    prompt.hidden = false;
-    navLink.hidden = false;
-}
-
-function hideRegistrationForms()
-{
-    document.getElementById("register").hidden = true;
-    document.getElementById("register-advisor").hidden = true;
-    document.getElementById("register-coordinator").hidden = true;
-}
-
-function showRegistration(role)
-{
-    if (role === undefined || role === "")
-    {
-        role = document.getElementById("LoginRole").value;
-        if (role === "")
-        {
-            role = "student"; // Supports the existing Student Registration link.
-        }
-    }
-    if (role !== "student" && role !== "advisor" && role !== "coordinator")
-    {
-        if (role === "admin")
-        {
-            document.getElementById("LoginRole").value = "admin";
-        }
-        showLogin();
-        return false;
-    }
-    hideRegistrationForms();
-    document.getElementById("LoginRole").value = role;
+    document.getElementById("LoginRole").value = "student";
     updateRoleTheme();
     document.getElementById("login").hidden = true;
-    if (role === "student")
-    {
-        document.getElementById("register").hidden = false;
-        document.getElementById("StudentName").focus();
-    }
-    else if (role === "advisor")
-    {
-        document.getElementById("register-advisor").hidden = false;
-        document.getElementById("AdvisorName").focus();
-    }
-    else if (role === "coordinator")
-    {
-        document.getElementById("register-coordinator").hidden = false;
-        document.getElementById("CoordinatorName").focus();
-    }
-    return false;
+    document.getElementById("register").hidden = false;
+    document.getElementById("StudentName").focus();
 }
 
 function showLogin(registeredRole)
 {
-    hideRegistrationForms();
+    document.getElementById("register").hidden = true;
     document.getElementById("login").hidden = false;
     resetLoginForm();
     if (registeredRole)
@@ -230,5 +119,4 @@ function resetLoginForm()
     document.getElementById("LoginPassword").type = "password";
     // Native form reset returns the role select to its empty first option.
     document.body.className = "";
-    updateRegistrationLink("");
 }
